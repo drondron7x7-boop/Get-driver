@@ -25,7 +25,7 @@
             <a href="#recuerda">Consideraciones</a>
         </nav>
 
-        <a class="header-cta" href="#inicio" data-start-link>Comenzar</a>
+        <a class="header-cta" href="#vehiculo" data-start-link>Comenzar</a>
 
         <div class="reading-progress" aria-hidden="true">
             <div class="reading-progress-bar" id="readingProgressBar"></div>
@@ -33,14 +33,16 @@
     </header>
 
     <main>
-        <!-- Inicio -->
+        <!-- Bienvenida -->
         <section class="hero section-anchor" id="inicio" data-stage="1">
-            <div class="hero-background-shape hero-shape-one"></div>
-            <div class="hero-background-shape hero-shape-two"></div>
-
             <div class="hero-content">
-                <p class="eyebrow"><span class="eyebrow-dot"></span> TU PRÓXIMO VIAJE EMPIEZA AQUÍ</p>
+                <p class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    TU PRÓXIMO VIAJE EMPIEZA AQUÍ
+                </p>
+
                 <h1>Tu camino para ser conductor <span>comienza aquí.</span></h1>
+
                 <p class="hero-description">
                     Revisa los requisitos, prepara tus documentos y conoce cómo realizar
                     tu proceso de afiliación a Get Driver.
@@ -51,6 +53,7 @@
                         Conocer los requisitos
                         <span aria-hidden="true">→</span>
                     </a>
+
                     <span class="hero-duration">
                         <span aria-hidden="true">◷</span>
                         Recorrido en 5 etapas
@@ -66,27 +69,66 @@
             <div class="hero-art" aria-label="Ilustración simulada de un vehículo">
                 <div class="hero-sun"></div>
                 <div class="hero-road"></div>
+
+                <!-- Checkmark, no número, en la etiqueta de preparación -->
                 <div class="floating-label label-top">
-                    <span class="label-icon" aria-hidden="true">01</span>
+                    <span class="label-icon" aria-hidden="true">✓</span>
                     <span>Prepara tu vehículo</span>
                 </div>
 
-                <svg class="hero-car" viewBox="0 0 640 360" role="img" aria-labelledby="carTitle">
+                <svg
+                    class="hero-car"
+                    viewBox="0 0 640 360"
+                    role="img"
+                    aria-labelledby="carTitle"
+                >
                     <title id="carTitle">Ilustración de automóvil para Get Driver</title>
-                    <ellipse cx="320" cy="300" rx="230" ry="25" fill="#132744" opacity=".12"/>
-                    <path d="M92 205h457c23 0 42 19 42 42v42H54v-48c0-20 16-36 38-36Z"
-                          fill="#fff" stroke="#172D4F" stroke-width="10"/>
-                    <path d="m166 205 66-91c10-14 25-22 42-22h137c19 0 36 9 47 24l67 89Z"
-                          fill="#fff" stroke="#172D4F" stroke-width="10" stroke-linejoin="round"/>
-                    <path d="m242 119-54 76h125v-95h-28c-18 0-33 7-43 19Z" fill="#D9E7F2"/>
-                    <path d="M330 100v95h178l-62-78c-8-11-20-17-34-17Z" fill="#D9E7F2"/>
-                    <path d="M62 237h52M553 237h25" stroke="#F5C928" stroke-width="16" stroke-linecap="round"/>
+                    <ellipse
+                        cx="320"
+                        cy="300"
+                        rx="230"
+                        ry="25"
+                        fill="#132744"
+                        opacity=".12"
+                    />
+                    <path
+                        d="M92 205h457c23 0 42 19 42 42v42H54v-48c0-20 16-36 38-36Z"
+                        fill="#fff"
+                        stroke="#172D4F"
+                        stroke-width="10"
+                    />
+                    <path
+                        d="m166 205 66-91c10-14 25-22 42-22h137c19 0 36 9 47 24l67 89Z"
+                        fill="#fff"
+                        stroke="#172D4F"
+                        stroke-width="10"
+                        stroke-linejoin="round"
+                    />
+                    <path
+                        d="m242 119-54 76h125v-95h-28c-18 0-33 7-43 19Z"
+                        fill="#D9E7F2"
+                    />
+                    <path
+                        d="M330 100v95h178l-62-78c-8-11-20-17-34-17Z"
+                        fill="#D9E7F2"
+                    />
+                    <path
+                        d="M62 237h52M553 237h25"
+                        stroke="#F5C928"
+                        stroke-width="16"
+                        stroke-linecap="round"
+                    />
                     <path d="M326 210v65" stroke="#D3DCE6" stroke-width="5"/>
                     <circle cx="170" cy="284" r="44" fill="#172D4F"/>
                     <circle cx="170" cy="284" r="19" fill="#E8EEF4"/>
                     <circle cx="484" cy="284" r="44" fill="#172D4F"/>
                     <circle cx="484" cy="284" r="19" fill="#E8EEF4"/>
-                    <path d="M122 196h45" stroke="#F5C928" stroke-width="9" stroke-linecap="round"/>
+                    <path
+                        d="M122 196h45"
+                        stroke="#F5C928"
+                        stroke-width="9"
+                        stroke-linecap="round"
+                    />
                     <circle cx="568" cy="195" r="8" fill="#F5C928"/>
                 </svg>
 
@@ -104,83 +146,139 @@
             </a>
         </section>
 
-        <!-- Etapa 2: Vehículo -->
+        <!-- Etapa 1: vehículo -->
         <section class="journey-section section-anchor" id="vehiculo" data-stage="2">
             <div class="section-heading">
-                <p class="eyebrow"><span class="eyebrow-dot"></span> ETAPA 1 · TU VEHÍCULO</p>
+                <p class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    ETAPA 1 · TU VEHÍCULO
+                </p>
+
                 <h2>¿Tu vehículo cumple con los requisitos?</h2>
-                <p>Revisa el tipo de vehículo y el año del modelo antes de iniciar tu registro.</p>
+                <p>
+                    Revisa el tipo de vehículo y el año del modelo antes de iniciar
+                    tu registro.
+                </p>
             </div>
 
             <div class="alternating-layout">
                 <div class="section-main">
                     <div class="vehicle-grid">
                         <article class="vehicle-card">
-                            <div class="vehicle-art vehicle-art-sedan">
+                            <div class="vehicle-art">
                                 <svg viewBox="0 0 300 150" role="img" aria-label="Ilustración de un sedán">
                                     <ellipse cx="150" cy="128" rx="115" ry="10" fill="#172D4F" opacity=".1"/>
-                                    <path d="M38 81h221c11 0 19 9 19 20v20H24V95c0-8 6-14 14-14Z"
-                                          fill="#fff" stroke="#172D4F" stroke-width="6"/>
-                                    <path d="m76 81 30-39h77l38 39Z" fill="#fff" stroke="#172D4F" stroke-width="6"/>
+                                    <path
+                                        d="M38 81h221c11 0 19 9 19 20v20H24V95c0-8 6-14 14-14Z"
+                                        fill="#fff"
+                                        stroke="#172D4F"
+                                        stroke-width="6"
+                                    />
+                                    <path
+                                        d="m76 81 30-39h77l38 39Z"
+                                        fill="#fff"
+                                        stroke="#172D4F"
+                                        stroke-width="6"
+                                    />
                                     <path d="m112 47-24 30h53V47Zm58 0v30h39l-27-30Z" fill="#DCE8F2"/>
                                     <circle cx="76" cy="121" r="19" fill="#172D4F"/>
                                     <circle cx="226" cy="121" r="19" fill="#172D4F"/>
                                     <circle cx="76" cy="121" r="8" fill="#EAF0F5"/>
                                     <circle cx="226" cy="121" r="8" fill="#EAF0F5"/>
-                                    <path d="M29 96h25m202 0h15" stroke="#F5C928" stroke-width="7" stroke-linecap="round"/>
+                                    <path
+                                        d="M29 96h25m202 0h15"
+                                        stroke="#F5C928"
+                                        stroke-width="7"
+                                        stroke-linecap="round"
+                                    />
                                 </svg>
                             </div>
+
                             <div class="vehicle-card-copy">
                                 <span class="card-kicker">TIPO DE VEHÍCULO</span>
                                 <h3>Sedán</h3>
                             </div>
+
                             <span class="vehicle-card-index">01</span>
                         </article>
 
                         <article class="vehicle-card">
-                            <div class="vehicle-art vehicle-art-hatchback">
+                            <div class="vehicle-art">
                                 <svg viewBox="0 0 300 150" role="img" aria-label="Ilustración de un hatchback">
                                     <ellipse cx="150" cy="128" rx="115" ry="10" fill="#172D4F" opacity=".1"/>
-                                    <path d="M37 81h221c11 0 19 9 19 20v20H24V95c0-8 6-14 13-14Z"
-                                          fill="#fff" stroke="#172D4F" stroke-width="6"/>
-                                    <path d="m74 81 31-39h86l35 39Z" fill="#fff" stroke="#172D4F" stroke-width="6"/>
+                                    <path
+                                        d="M37 81h221c11 0 19 9 19 20v20H24V95c0-8 6-14 13-14Z"
+                                        fill="#fff"
+                                        stroke="#172D4F"
+                                        stroke-width="6"
+                                    />
+                                    <path
+                                        d="m74 81 31-39h86l35 39Z"
+                                        fill="#fff"
+                                        stroke="#172D4F"
+                                        stroke-width="6"
+                                    />
                                     <path d="m110 47-25 30h59V47Zm47 0v30h59l-26-30Z" fill="#DCE8F2"/>
                                     <path d="M221 51v31" stroke="#172D4F" stroke-width="5"/>
                                     <circle cx="76" cy="121" r="19" fill="#172D4F"/>
                                     <circle cx="226" cy="121" r="19" fill="#172D4F"/>
                                     <circle cx="76" cy="121" r="8" fill="#EAF0F5"/>
                                     <circle cx="226" cy="121" r="8" fill="#EAF0F5"/>
-                                    <path d="M29 96h25m202 0h15" stroke="#F5C928" stroke-width="7" stroke-linecap="round"/>
+                                    <path
+                                        d="M29 96h25m202 0h15"
+                                        stroke="#F5C928"
+                                        stroke-width="7"
+                                        stroke-linecap="round"
+                                    />
                                 </svg>
                             </div>
+
                             <div class="vehicle-card-copy">
                                 <span class="card-kicker">TIPO DE VEHÍCULO</span>
                                 <h3>Hatchback</h3>
                             </div>
+
                             <span class="vehicle-card-index">02</span>
                         </article>
 
                         <article class="vehicle-card">
-                            <div class="vehicle-art vehicle-art-suv">
+                            <div class="vehicle-art">
                                 <svg viewBox="0 0 300 150" role="img" aria-label="Ilustración de una SUV">
                                     <ellipse cx="150" cy="128" rx="115" ry="10" fill="#172D4F" opacity=".1"/>
-                                    <path d="M36 72h227c10 0 18 9 18 20v29H24V89c0-9 5-15 12-17Z"
-                                          fill="#fff" stroke="#172D4F" stroke-width="6"/>
-                                    <path d="m69 72 27-40c5-7 12-10 21-10h86c9 0 18 5 23 12l28 38Z"
-                                          fill="#fff" stroke="#172D4F" stroke-width="6"/>
-                                    <path d="m105 29-25 38h62V28h-17c-9 0-15 0-20 1Zm49-1v39h83l-24-32c-3-4-7-7-13-7Z"
-                                          fill="#DCE8F2"/>
+                                    <path
+                                        d="M36 72h227c10 0 18 9 18 20v29H24V89c0-9 5-15 12-17Z"
+                                        fill="#fff"
+                                        stroke="#172D4F"
+                                        stroke-width="6"
+                                    />
+                                    <path
+                                        d="m69 72 27-40c5-7 12-10 21-10h86c9 0 18 5 23 12l28 38Z"
+                                        fill="#fff"
+                                        stroke="#172D4F"
+                                        stroke-width="6"
+                                    />
+                                    <path
+                                        d="m105 29-25 38h62V28h-17c-9 0-15 0-20 1Zm49-1v39h83l-24-32c-3-4-7-7-13-7Z"
+                                        fill="#DCE8F2"
+                                    />
                                     <circle cx="77" cy="121" r="19" fill="#172D4F"/>
                                     <circle cx="226" cy="121" r="19" fill="#172D4F"/>
                                     <circle cx="77" cy="121" r="8" fill="#EAF0F5"/>
                                     <circle cx="226" cy="121" r="8" fill="#EAF0F5"/>
-                                    <path d="M29 93h24m214 0h13" stroke="#F5C928" stroke-width="7" stroke-linecap="round"/>
+                                    <path
+                                        d="M29 93h24m214 0h13"
+                                        stroke="#F5C928"
+                                        stroke-width="7"
+                                        stroke-linecap="round"
+                                    />
                                 </svg>
                             </div>
+
                             <div class="vehicle-card-copy">
                                 <span class="card-kicker">TIPO DE VEHÍCULO</span>
                                 <h3>SUV</h3>
                             </div>
+
                             <span class="vehicle-card-index">03</span>
                         </article>
                     </div>
@@ -205,17 +303,26 @@
                         <span>Espacio para la futura mascota</span>
                         <small>Ilustración o animación</small>
                     </div>
-                    <p class="mascot-caption">Este espacio no cubre el contenido y se adapta al tamaño de pantalla.</p>
+                    <p class="mascot-caption">
+                        Este espacio no cubre el contenido y se adapta al tamaño de pantalla.
+                    </p>
                 </aside>
             </div>
         </section>
 
-        <!-- Etapa 3: Documentos y fotografías -->
+        <!-- Etapa 2: documentos y fotografías -->
         <section class="journey-section section-anchor section-tinted" id="preparacion" data-stage="3">
             <div class="section-heading">
-                <p class="eyebrow"><span class="eyebrow-dot"></span> ETAPA 2 · PREPARACIÓN</p>
+                <p class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    ETAPA 2 · PREPARACIÓN
+                </p>
+
                 <h2>Prepara todo antes de registrarte</h2>
-                <p>Ten listos tus documentos y las fotografías solicitadas para completar tu registro.</p>
+                <p>
+                    Ten listos tus documentos y las fotografías solicitadas para
+                    completar tu registro.
+                </p>
             </div>
 
             <div class="alternating-layout layout-mascot-left">
@@ -229,7 +336,9 @@
                         <span>Espacio para la futura mascota</span>
                         <small>Ilustración o animación</small>
                     </div>
-                    <p class="mascot-caption">Área independiente para futuras explicaciones animadas.</p>
+                    <p class="mascot-caption">
+                        Área independiente para futuras explicaciones animadas.
+                    </p>
                 </aside>
 
                 <div class="section-main">
@@ -269,7 +378,7 @@
                                         <circle cx="35" cy="27" r="11" fill="#F5C928"/>
                                         <path d="M14 59c3-13 11-20 21-20s18 7 21 20" fill="#172D4F"/>
                                         <circle cx="35" cy="35" r="33" fill="none" stroke="#D5DFE9" stroke-width="2"/>
-                                      </svg>
+                                    </svg>
                                 </div>
                                 <div>
                                     <span class="card-kicker">FOTOGRAFÍA PERSONAL</span>
@@ -289,7 +398,6 @@
                                         <svg viewBox="0 0 140 76" aria-hidden="true">
                                             <rect width="140" height="76" rx="12" fill="#EAF1F8"/>
                                             <path d="M34 52V34l10-17h52l10 17v18" fill="#fff" stroke="#172D4F" stroke-width="4" stroke-linejoin="round"/>
-                                            <path d="M44 34h52M53 20l-7 14m41-14 7 14" stroke="#B8C9D9" stroke-width="3"/>
                                             <rect x="28" y="46" width="84" height="15" rx="7" fill="#fff" stroke="#172D4F" stroke-width="4"/>
                                             <circle cx="47" cy="61" r="8" fill="#172D4F"/>
                                             <circle cx="93" cy="61" r="8" fill="#172D4F"/>
@@ -304,12 +412,10 @@
                                         <svg viewBox="0 0 140 76" aria-hidden="true">
                                             <rect width="140" height="76" rx="12" fill="#EAF1F8"/>
                                             <path d="M34 52V34l10-17h52l10 17v18" fill="#fff" stroke="#172D4F" stroke-width="4" stroke-linejoin="round"/>
-                                            <path d="M44 34h52M53 20l-7 14m41-14 7 14" stroke="#B8C9D9" stroke-width="3"/>
                                             <rect x="28" y="46" width="84" height="15" rx="7" fill="#fff" stroke="#172D4F" stroke-width="4"/>
+                                            <rect x="58" y="38" width="24" height="9" rx="3" fill="#172D4F"/>
                                             <circle cx="47" cy="61" r="8" fill="#172D4F"/>
                                             <circle cx="93" cy="61" r="8" fill="#172D4F"/>
-                                            <rect x="58" y="38" width="24" height="9" rx="3" fill="#172D4F"/>
-                                            <path d="M30 50h12m69 0h-12" stroke="#F5C928" stroke-width="5" stroke-linecap="round"/>
                                         </svg>
                                     </div>
                                     <span>Vista trasera</span>
@@ -321,7 +427,6 @@
                                             <rect width="140" height="76" rx="12" fill="#EAF1F8"/>
                                             <path d="m23 49 9-17 20-5 14-13h34l18 19 4 16H23Z" fill="#fff" stroke="#172D4F" stroke-width="4" stroke-linejoin="round"/>
                                             <path d="m57 29 13-12h25l12 13H57Z" fill="#CFE0EE"/>
-                                            <path d="M70 18v12" stroke="#B8C9D9" stroke-width="2"/>
                                             <circle cx="46" cy="50" r="9" fill="#172D4F"/>
                                             <circle cx="105" cy="50" r="9" fill="#172D4F"/>
                                             <path d="M27 44h11m91 0h-10" stroke="#F5C928" stroke-width="5" stroke-linecap="round"/>
@@ -377,10 +482,13 @@
             </div>
         </section>
 
-        <!-- Etapa 4: Proceso -->
+        <!-- Etapa 3: proceso -->
         <section class="journey-section section-anchor" id="afiliacion" data-stage="4">
             <div class="section-heading">
-                <p class="eyebrow"><span class="eyebrow-dot"></span> ETAPA 3 · REGISTRO</p>
+                <p class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    ETAPA 3 · REGISTRO
+                </p>
                 <h2>¿Cómo realizar tu afiliación?</h2>
                 <p>Sigue estos pasos para registrar tu información en la aplicación.</p>
             </div>
@@ -390,31 +498,52 @@
                     <ol class="process-list">
                         <li>
                             <span class="process-number">01</span>
-                            <div><h3>Descarga la aplicación</h3><p>Busca GET DRIVER Conductor.</p></div>
+                            <div>
+                                <h3>Descarga la aplicación</h3>
+                                <p>Busca GET DRIVER Conductor.</p>
+                            </div>
                         </li>
                         <li>
                             <span class="process-number">02</span>
-                            <div><h3>Inicia sesión</h3><p>Utiliza la misma cuenta que usas como pasajero.</p></div>
+                            <div>
+                                <h3>Inicia sesión</h3>
+                                <p>Utiliza la misma cuenta que usas como pasajero.</p>
+                            </div>
                         </li>
                         <li>
                             <span class="process-number">03</span>
-                            <div><h3>Completa tus datos</h3><p>Registra tu información personal.</p></div>
+                            <div>
+                                <h3>Completa tus datos</h3>
+                                <p>Registra tu información personal.</p>
+                            </div>
                         </li>
                         <li>
                             <span class="process-number">04</span>
-                            <div><h3>Registra tu vehículo</h3><p>Ingresa los datos solicitados del vehículo.</p></div>
+                            <div>
+                                <h3>Registra tu vehículo</h3>
+                                <p>Ingresa los datos solicitados del vehículo.</p>
+                            </div>
                         </li>
                         <li>
                             <span class="process-number">05</span>
-                            <div><h3>Adjunta tus archivos</h3><p>Sube los documentos y fotografías solicitados.</p></div>
+                            <div>
+                                <h3>Adjunta tus archivos</h3>
+                                <p>Sube los documentos y fotografías solicitados.</p>
+                            </div>
                         </li>
                         <li>
                             <span class="process-number">06</span>
-                            <div><h3>Envía la información</h3><p>Envía tu registro para su verificación.</p></div>
+                            <div>
+                                <h3>Envía la información</h3>
+                                <p>Envía tu registro para su verificación.</p>
+                            </div>
                         </li>
                         <li>
                             <span class="process-number">07</span>
-                            <div><h3>Consulta el estado</h3><p>Revisa el estado de aprobación en la aplicación.</p></div>
+                            <div>
+                                <h3>Consulta el estado</h3>
+                                <p>Revisa el estado de aprobación en la aplicación.</p>
+                            </div>
                         </li>
                     </ol>
 
@@ -434,15 +563,20 @@
                         <span>Espacio para la futura mascota</span>
                         <small>Ilustración o animación</small>
                     </div>
-                    <p class="mascot-caption">Contenedor separado del paso a paso para que nada se superponga.</p>
+                    <p class="mascot-caption">
+                        Contenedor separado del paso a paso para que nada se superponga.
+                    </p>
                 </aside>
             </div>
         </section>
 
-        <!-- Etapa 5: Consideraciones finales -->
+        <!-- Etapa 4: consideraciones -->
         <section class="journey-section section-anchor section-tinted" id="recuerda" data-stage="5">
             <div class="section-heading">
-                <p class="eyebrow"><span class="eyebrow-dot"></span> ETAPA 4 · ANTES DE EMPEZAR</p>
+                <p class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    ETAPA 4 · ANTES DE EMPEZAR
+                </p>
                 <h2>Antes de comenzar, recuerda</h2>
                 <p>Ten presentes estas consideraciones para completar tu proceso.</p>
             </div>
@@ -458,7 +592,9 @@
                         <span>Espacio para la futura mascota</span>
                         <small>Ilustración o animación</small>
                     </div>
-                    <p class="mascot-caption">El espacio puede reemplazarse por la mascota oficial más adelante.</p>
+                    <p class="mascot-caption">
+                        El espacio puede reemplazarse por la mascota oficial más adelante.
+                    </p>
                 </aside>
 
                 <div class="section-main">
@@ -468,13 +604,13 @@
                             <span class="card-kicker">INFORMACIÓN IMPORTANTE</span>
                             <h3>Conductores extranjeros</h3>
                             <p>
-                                Para completar la afiliación también deberán presentar antecedentes
-                                policiales y penales.
+                                Para completar la afiliación también deberán presentar
+                                antecedentes policiales y penales.
                             </p>
                             <p class="foreign-note">
-                                Los conductores extranjeros deben gestionar el documento de
-                                antecedentes policiales de su país mediante la organización
-                                correspondiente en Arequipa.
+                                Los conductores extranjeros deben gestionar el documento
+                                de antecedentes policiales de su país mediante la
+                                organización correspondiente en Arequipa.
                             </p>
                         </div>
                     </section>
@@ -482,6 +618,7 @@
                     <section class="commitment-section">
                         <span class="card-kicker">NUESTRO COMPROMISO</span>
                         <h3>La experiencia también depende de ti</h3>
+
                         <div class="commitment-grid">
                             <div class="commitment-card">
                                 <span class="commitment-check" aria-hidden="true">✓</span>
