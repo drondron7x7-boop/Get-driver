@@ -4,14 +4,11 @@
     --navy-light: #203D64;
     --yellow: #F5C928;
     --white: #FFFFFF;
-    --canvas-blue: #172D4F;
-    --card-blue: #203D64;
     --line-light: rgba(255, 255, 255, 0.14);
     --line-dark: #E5EAF0;
     --text-dark: #334155;
     --text-muted: #68778B;
     --text-on-blue: #F3F6FA;
-    --muted-on-blue: #C0CCDB;
     --green: #2C9364;
     --shadow-light: 0 16px 38px rgba(0, 0, 0, 0.16);
     --radius: 20px;
@@ -29,7 +26,7 @@ html {
 body {
     margin: 0;
     color: var(--text-on-blue);
-    background: var(--canvas-blue);
+    background: var(--navy);
     font-family: Inter, "Segoe UI", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
 }
@@ -340,12 +337,18 @@ button {
     border-top: 4px dashed rgba(255, 255, 255, 0.3);
 }
 
+/*
+ * Movimiento natural del auto:
+ * sube y baja suavemente, sin desplazamiento lateral ni rotación.
+ */
 .hero-car {
     position: relative;
     z-index: 1;
     width: min(115%, 620px);
     filter: drop-shadow(0 22px 18px rgba(0, 0, 0, 0.25));
-    animation: carFloat 4s ease-in-out infinite;
+    transform-origin: 50% 80%;
+    animation: carFloat 3s ease-in-out infinite;
+    will-change: transform;
 }
 
 @keyframes carFloat {
@@ -355,7 +358,7 @@ button {
     }
 
     50% {
-        transform: translateY(-8px);
+        transform: translateY(-7px);
     }
 }
 
@@ -535,6 +538,15 @@ button {
 
 .vehicle-card-copy .card-kicker {
     color: #78869A;
+}
+
+.card-kicker {
+    display: block;
+    color: #78869A;
+    font-size: 0.64rem;
+    font-weight: 900;
+    letter-spacing: 0.09em;
+    line-height: 1.45;
 }
 
 .vehicle-card h3 {
@@ -754,7 +766,9 @@ button {
     font-weight: 900;
 }
 
-.info-card-heading .card-kicker {
+.info-card-heading .card-kicker,
+.selfie-row .card-kicker,
+.foreign-card .card-kicker {
     color: #78869A;
 }
 
@@ -817,10 +831,6 @@ button {
 .selfie-illustration svg {
     width: 100%;
     height: 100%;
-}
-
-.selfie-row .card-kicker {
-    color: #78869A;
 }
 
 .selfie-row strong {
@@ -1019,10 +1029,6 @@ button {
     font-weight: 900;
 }
 
-.foreign-card .card-kicker {
-    color: #78869A;
-}
-
 .foreign-card h3,
 .commitment-section h3 {
     margin: 7px 0 10px;
@@ -1057,8 +1063,8 @@ button {
 }
 
 .commitment-section h3 {
-    color: var(--white);
     margin-bottom: 14px;
+    color: var(--white);
 }
 
 .commitment-grid {
@@ -1190,27 +1196,47 @@ button {
     text-decoration: none;
 }
 
-/* Animaciones de aparición activadas desde script.js */
+/* Animaciones al recorrer la página */
 .js-reveal {
+    --reveal-x: 0px;
+    --reveal-y: 24px;
+
     opacity: 0;
-    transform: translateY(18px);
+    transform: translate3d(var(--reveal-x), var(--reveal-y), 0);
     transition:
-        opacity 0.65s ease,
-        transform 0.65s ease;
+        opacity 0.55s ease,
+        transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+.js-reveal.reveal-from-below {
+    --reveal-y: 24px;
+}
+
+.js-reveal.reveal-from-above {
+    --reveal-y: -24px;
 }
 
 .js-reveal.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
 }
 
-/* Mascota: aparece desde la derecha dentro de su propia columna. */
+/* Mascota: conserva una entrada horizontal, sin interferir con el contenido */
 .mascot-slot.js-reveal {
-    transform: translateX(48px);
+    --reveal-x: 34px;
 }
 
-.mascot-slot.js-reveal.is-visible {
-    transform: translateX(0);
+.mascot-slot.js-reveal.reveal-from-below {
+    --reveal-y: 20px;
+}
+
+.mascot-slot.js-reveal.reveal-from-above {
+    --reveal-y: -20px;
+}
+
+.layout-mascot-left .mascot-slot.js-reveal {
+    --reveal-x: 34px;
 }
 
 /* Adaptación para tablets */
@@ -1237,14 +1263,6 @@ button {
 
     .preparation-grid {
         grid-template-columns: 1fr;
-    }
-
-    .documents-card {
-        order: 1;
-    }
-
-    .photos-card {
-        order: 2;
     }
 }
 
@@ -1361,7 +1379,6 @@ button {
         gap: 23px;
     }
 
-    /* En móvil, la reserva de mascota va después del contenido. */
     .layout-mascot-left .section-main {
         order: 1;
     }
@@ -1510,5 +1527,6 @@ button {
     .mascot-slot.js-reveal {
         opacity: 1;
         transform: none;
+        will-change: auto;
     }
 }
