@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -87,7 +86,6 @@
     </symbol>
   </svg>
 
-  <!-- Esta plantilla se incorpora una vez a cada escena mediante script.js. -->
   <template id="guideTemplate">
     <aside class="guide" aria-label="Mascota guía">
       <div class="guide-halo"></div>
@@ -131,11 +129,11 @@
 
     <main class="viewport" id="inicio">
 
-      <!-- ESCENA 1: BIENVENIDA -->
+      <!-- ESCENA 1 -->
       <section
         class="scene is-active"
         data-side="left"
-        data-gif="assets/mascota/01-saludo.gif"
+        data-gif="assets/mascota/provisional.gif"
         data-dialogue="¡Hola! Bienvenido a Get Driver. Te acompañaré para que conozcas los requisitos y cómo solicitar tu afiliación. ¡Vamos paso a paso!"
         aria-labelledby="scene1-title"
       >
@@ -175,23 +173,8 @@
                   <rect x="444" y="175" width="80" height="65" rx="10"/>
                 </g>
 
-                <use
-                  href="#journeyPath"
-                  stroke="#ffffff"
-                  stroke-opacity=".14"
-                  stroke-width="20"
-                  fill="none"
-                  stroke-linecap="round"
-                />
-
-                <use
-                  class="route-animated"
-                  href="#journeyPath"
-                  stroke="#f5c928"
-                  stroke-width="7"
-                  fill="none"
-                  stroke-linecap="round"
-                />
+                <use href="#journeyPath" stroke="#ffffff" stroke-opacity=".14" stroke-width="20" fill="none" stroke-linecap="round"/>
+                <use class="route-animated" href="#journeyPath" stroke="#f5c928" stroke-width="7" fill="none" stroke-linecap="round"/>
 
                 <circle cx="70" cy="190" r="13" fill="#f5c928" stroke="#fff" stroke-width="4"/>
 
@@ -222,11 +205,11 @@
         </div>
       </section>
 
-      <!-- ESCENA 2: VEHÍCULOS Y AÑO -->
+      <!-- ESCENA 2 -->
       <section
         class="scene"
         data-side="right"
-        data-gif="assets/mascota/02-vehiculos.gif"
+        data-gif="assets/mascota/provisional.gif"
         data-dialogue="Primero, tu vehículo. Puede ser sedán, hatchback o SUV. Además, el año de modelo indicado es 2010 en adelante."
         aria-labelledby="scene2-title"
       >
@@ -281,11 +264,11 @@
         </div>
       </section>
 
-      <!-- ESCENA 3: DOCUMENTOS BÁSICOS -->
+      <!-- ESCENA 3 -->
       <section
         class="scene"
         data-side="left"
-        data-gif="assets/mascota/03-documentos.gif"
+        data-gif="assets/mascota/provisional.gif"
         data-dialogue="Prepara tus documentos básicos: identificación y licencia vigentes, además del SOAT y la tarjeta de propiedad del vehículo."
         aria-labelledby="scene3-title"
       >
@@ -344,11 +327,11 @@
         </div>
       </section>
 
-      <!-- ESCENA 4: ANTECEDENTES -->
+      <!-- ESCENA 4 -->
       <section
         class="scene"
         data-side="right"
-        data-gif="assets/mascota/04-antecedentes.gif"
+        data-gif="assets/mascota/provisional.gif"
         data-dialogue="También necesitas antecedentes policiales y penales. Si eres extranjero, los antecedentes policiales de tu país se gestionan mediante la organización correspondiente en Arequipa."
         aria-labelledby="scene4-title"
       >
@@ -390,11 +373,11 @@
         </div>
       </section>
 
-      <!-- ESCENA 5: FOTOGRAFÍAS EXTERIORES -->
+      <!-- ESCENA 5 -->
       <section
         class="scene"
         data-side="left"
-        data-gif="assets/mascota/05-fotos-exterior.gif"
+        data-gif="assets/mascota/provisional.gif"
         data-dialogue="Ahora, las fotos del vehículo. Primero prepara cuatro vistas exteriores: frontal, trasera y los dos laterales."
         aria-labelledby="scene5-title"
       >
@@ -449,11 +432,11 @@
         </div>
       </section>
 
-      <!-- ESCENA 6: INTERIOR Y SELFIE -->
+      <!-- ESCENA 6 -->
       <section
         class="scene"
         data-side="right"
-        data-gif="assets/mascota/06-selfie.gif"
+        data-gif="assets/mascota/provisional.gif"
         data-dialogue="Para completar las fotos, añade el interior delantero, el interior trasero y una selfie tuya sin lentes oscuros. En total son seis fotos del auto y una selfie."
         aria-labelledby="scene6-title"
       >
@@ -505,11 +488,11 @@
         </div>
       </section>
 
-      <!-- ESCENA 7: REGISTRO EN LA APLICACIÓN -->
+      <!-- ESCENA 7 -->
       <section
         class="scene"
         data-side="left"
-        data-gif="assets/mascota/07-aplicacion.gif"
+        data-gif="assets/mascota/provisional.gif"
         data-dialogue="Con todo preparado, abre GET DRIVER Conductor. Descárgala, inicia sesión con tu cuenta de pasajero y registra tus datos y los del vehículo."
         aria-labelledby="scene7-title"
       >
@@ -563,11 +546,11 @@
         </div>
       </section>
 
-      <!-- ESCENA 8: ENVÍO Y VERIFICACIÓN -->
+      <!-- ESCENA 8 -->
       <section
         class="scene"
         data-side="right"
-        data-gif="assets/mascota/08-verificacion.gif"
+        data-gif="assets/mascota/provisional.gif"
         data-dialogue="Después adjunta tus archivos, revisa y envía la solicitud. Get Driver verificará la información; consulta el resultado dentro de la aplicación."
         aria-labelledby="scene8-title"
       >
@@ -616,11 +599,11 @@
         </div>
       </section>
 
-      <!-- ESCENA 9: RECOMENDACIONES Y DESPEDIDA -->
+      <!-- ESCENA 9 -->
       <section
         class="scene"
         data-side="left"
-        data-gif="assets/mascota/09-despedida.gif"
+        data-gif="assets/mascota/provisional.gif"
         data-dialogue="¡Excelente! Ya conoces todo el recorrido. Recuerda cuidar tu presentación y tratar bien a tus pasajeros. Ahora sigue las indicaciones en la app. ¡Te esperamos!"
         aria-labelledby="scene9-title"
       >
