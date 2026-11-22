@@ -1,186 +1,525 @@
+
+/* =====================================================
+   GET DRIVER | ANIMACIÓN DE LAS 9 ESCENAS
+   Presentación visual, sin cuestionarios ni formularios.
+   Se puede avanzar aunque la mascota siga hablando.
+   ===================================================== */
+
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
-    const progressBar = document.getElementById("readingProgressBar");
-    const appButton = document.getElementById("appButton");
-    const appStatus = document.getElementById("appStatus");
+  const scenes = [...document.querySelectorAll(".scene")];
+  const template = document.getElementById("guideTemplate");
+  const previous = document.getElementById("prevButton");
+  const next = document.getElementById("nextButton");
+  const nextLabel = document.getElementById("nextLabel");
+  const nextArrow = document.getElementById("nextArrow");
+  const replay = document.getElementById("replayButton");
+  const dotsHolder = document.getElementById("sceneDots");
+  const progressFill = document.getElementById("progressFill");
+  const viewport = document.querySelector(".viewport");
 
-    const revealSelector = [
-        ".vehicle-card",
-        ".year-requirement",
-        ".info-card",
-        ".mascot-slot",
-        ".process-list li",
-        ".verification-banner",
-        ".foreign-card",
-        ".commitment-card",
-        ".finish-card"
-    ].join(", ");
+  const reducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  );
 
-    const revealElements = Array.from(
-        document.querySelectorAll(revealSelector)
+  if (
+    !scenes.length ||
+    !template ||
+    !previous ||
+    !next ||
+    !nextLabel ||
+    !nextArrow ||
+    !replay ||
+    !dotsHolder ||
+    !progressFill ||
+    !viewport
+  ) {
+    console.error(
+      "Get Driver: falta un elemento necesario en index.html."
+    );
+    return;
+  }
+
+  let current = 0;
+  let animationVersion = 0;
+  let timeouts = [];
+  let typingInterval = null;
+  let touchStart = null;
+
+  /* ==========================================
+     MASCOTA DE CADA ESCENA
+     ========================================== */
+
+  // Coloca una mascota independiente en cada escena.
+  // Si no existe el GIF, aparece el personaje temporal.
+
+  scenes.forEach((scene) => {
+    const guide = template.content
+      .firstElementChild.cloneNode(true);
+
+    const image = guide.querySelector(".guide-image");
+    const character = guide.querySelector(".guide-character");
+
+    const title = scene.querySelector("h1, h2")
+      ?.textContent.trim() || "Get Driver";
+
+    image.alt = `Mascota de Get Driver: ${title}`;
+
+    image.addEventListener("load", () => {
+      character.classList.toggle(
+        "has-image",
+        image.naturalWidth > 0
+      );
+    });
+
+    image.addEventListener("error", () => {
+      character.classList.remove("has-image");
+    });
+
+    scene.querySelector(".scene-shell").prepend(guide);
+  });
+
+  function loadMascot(scene) {
+    const image = scene.querySelector(".guide-image");
+
+    if (!image || image.dataset.loaded) {
+      return;
+    }
+
+    image.dataset.loaded = "requested";
+    image.src = scene.dataset.gif || "";
+
+    if (image.complete && image.naturalWidth) {
+      image.closest(".guide-character")
+        .classList.add("has-image");
+    }
+  }
+
+  /* ==========================================
+     LOGOTIPO
+     ========================================== */
+
+  const brandImage = document.getElementById("brandImage");
+  const brandSymbol = document.getElementById("brandSymbol");
+
+  if (brandImage && brandSymbol) {
+    const refreshBrand = () => {
+      brandSymbol.classList.toggle(
+        "has-image",
+        brandImage.complete && brandImage.naturalWidth > 0
+      );
+    };
+
+    brandImage.addEventListener("load", refreshBrand);
+    brandImage.addEventListener("error", refreshBrand);
+
+    refreshBrand();
+  }
+
+  /* ==========================================
+     PUNTOS DE NAVEGACIÓN
+     ========================================== */
+
+  const dots = scenes.map((scene, index) => {
+    const button = document.createElement("button");
+
+    button.className = "scene-dot";
+    button.type = "button";
+
+    button.setAttribute(
+      "aria-label",
+      `Ir a ${scene.querySelector("h1, h2").textContent.trim()}`
     );
 
-    let lastScrollY = window.scrollY;
-    let scrollDirection = "down";
+    button.addEventListener("click", () => {
+      showScene(index);
+    });
 
-    /*
-     * Registra si el usuario se desplaza hacia arriba o hacia abajo.
-     * Se usa para decidir desde qué dirección entrará cada elemento.
-     */
-    function updateScrollDirection() {
-        const currentScrollY = window.scrollY;
+    dotsHolder.appendChild(button);
 
-        if (currentScrollY < lastScrollY) {
-            scrollDirection = "up";
-        } else if (currentScrollY > lastScrollY) {
-            scrollDirection = "down";
+    return button;
+  });
+
+  /* ==========================================
+     TEMPORIZADORES
+     ========================================== */
+
+  function schedule(callback, delay) {
+    const id = window.setTimeout(
+      callback,
+      reducedMotion.matches ? 0 : delay
+    );
+
+    timeouts.push(id);
+  }
+
+  // Cada cambio cancela las animaciones anteriores.
+
+  function cancelAnimations() {
+    animationVersion++;
+
+    timeouts.forEach((id) => {
+      window.clearTimeout(id);
+    });
+
+    timeouts = [];
+
+    if (typingInterval !== null) {
+      window.clearInterval(typingInterval);
+      typingInterval = null;
+    }
+
+    scenes.forEach((scene) => {
+      scene.querySelector(".speech")
+        ?.classList.remove("is-typing");
+    });
+  }
+
+  /* ==========================================
+     ESTADO DE NAVEGACIÓN
+     ========================================== */
+
+  function updateControls() {
+    previous.disabled = current === 0;
+
+    nextLabel.textContent =
+      current === 0
+        ? "Comenzar"
+        : current === scenes.length - 1
+          ? "Volver al inicio"
+          : "Siguiente";
+
+    nextArrow.textContent =
+      current === scenes.length - 1
+        ? "↻"
+        : "→";
+
+    progressFill.style.width =
+      `${(current + 1) / scenes.length * 100}%`;
+
+    dots.forEach((dot, index) => {
+      dot.classList.toggle(
+        "is-current",
+        index === current
+      );
+
+      if (index === current) {
+        dot.setAttribute("aria-current", "step");
+      } else {
+        dot.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  /* ==========================================
+     DIÁLOGO ANIMADO
+     ========================================== */
+
+  function writeDialogue(
+    textElement,
+    bubble,
+    fullText,
+    version
+  ) {
+    if (reducedMotion.matches) {
+      textElement.textContent = fullText;
+      bubble.classList.remove("is-typing");
+      return;
+    }
+
+    const characters = Array.from(fullText);
+    let position = 0;
+
+    typingInterval = window.setInterval(() => {
+      if (version !== animationVersion) {
+        return;
+      }
+
+      // Escribe poco a poco sin bloquear los botones.
+      position = Math.min(
+        position + 1,
+        characters.length
+      );
+
+      textElement.textContent = characters
+        .slice(0, position)
+        .join("");
+
+      if (position >= characters.length) {
+        window.clearInterval(typingInterval);
+        typingInterval = null;
+
+        bubble.classList.remove("is-typing");
+      }
+    }, 33);
+  }
+
+  /* ==========================================
+     REPRODUCIR UNA ESCENA
+     ========================================== */
+
+  function playScene() {
+    cancelAnimations();
+
+    const version = animationVersion;
+    const scene = scenes[current];
+
+    const character = scene.querySelector(
+      ".guide-character"
+    );
+
+    const bubble = scene.querySelector(".speech");
+    const speechText = scene.querySelector(".speech-text");
+
+    const elements = [
+      ...scene.querySelectorAll("[data-reveal]")
+    ];
+
+    const dialogue = scene.dataset.dialogue || "";
+
+    loadMascot(scene);
+
+    scene.classList.add("is-playing");
+
+    character.classList.remove("is-entered");
+
+    bubble.classList.remove(
+      "is-visible",
+      "is-typing"
+    );
+
+    speechText.textContent = "";
+
+    elements.forEach((element) => {
+      element.classList.remove("shown");
+    });
+
+    // Permite reiniciar las animaciones CSS.
+    void scene.offsetWidth;
+
+    /* MOVIMIENTO REDUCIDO */
+
+    if (reducedMotion.matches) {
+      character.classList.add("is-entered");
+      bubble.classList.add("is-visible");
+
+      speechText.textContent = dialogue;
+
+      elements.forEach((element) => {
+        element.classList.add("shown");
+      });
+
+      return;
+    }
+
+    /* 1. ENTRA LA MASCOTA */
+
+    schedule(() => {
+      if (version === animationVersion) {
+        character.classList.add("is-entered");
+      }
+    }, 130);
+
+    /* 2. APARECE LA BURBUJA */
+
+    schedule(() => {
+      if (version !== animationVersion) {
+        return;
+      }
+
+      bubble.classList.add(
+        "is-visible",
+        "is-typing"
+      );
+
+      writeDialogue(
+        speechText,
+        bubble,
+        dialogue,
+        version
+      );
+    }, 790);
+
+    /* 3. APARECEN LOS ELEMENTOS VISUALES */
+
+    // Cada elemento aparece después del anterior,
+    // mientras continúa la explicación de la mascota.
+
+    elements.forEach((element, index) => {
+      schedule(() => {
+        if (version === animationVersion) {
+          element.classList.add("shown");
         }
+      }, 1190 + index * 790);
+    });
+  }
 
-        lastScrollY = currentScrollY;
+  /* ==========================================
+     CAMBIAR DE ESCENA
+     ========================================== */
+
+  function showScene(index) {
+    if (
+      !Number.isInteger(index) ||
+      index < 0 ||
+      index >= scenes.length
+    ) {
+      return;
     }
 
-    window.addEventListener("scroll", updateScrollDirection, {
-        passive: true
+    cancelAnimations();
+
+    scenes[current].classList.remove(
+      "is-active",
+      "is-playing"
+    );
+
+    scenes[current].setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    current = index;
+
+    const scene = scenes[current];
+
+    scene.classList.add("is-active");
+
+    scene.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+    scene.scrollTop = 0;
+
+    updateControls();
+    playScene();
+  }
+
+  /* ==========================================
+     BOTONES PRINCIPALES
+     ========================================== */
+
+  previous.addEventListener("click", () => {
+    showScene(current - 1);
+  });
+
+  next.addEventListener("click", () => {
+    showScene(
+      current === scenes.length - 1
+        ? 0
+        : current + 1
+    );
+  });
+
+  replay.addEventListener("click", () => {
+    playScene();
+  });
+
+  document.getElementById("goHome")
+    ?.addEventListener("click", (event) => {
+      event.preventDefault();
+      showScene(0);
     });
 
-    /*
-     * Prepara los elementos para la animación.
-     * La reserva de la mascota conserva su movimiento lateral.
-     */
-    const delayBySection = new WeakMap();
+  /* ==========================================
+     NAVEGACIÓN CON TECLADO
+     ========================================== */
 
-    revealElements.forEach((element) => {
-        const section = element.closest("section") || document.body;
-        const currentDelay = delayBySection.get(section) || 0;
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.altKey ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.target.closest(
+        "button, a, input, textarea, select"
+      )
+    ) {
+      return;
+    }
 
-        element.classList.add("js-reveal");
-        element.classList.add(
-            scrollDirection === "up" ? "reveal-from-above" : "reveal-from-below"
+    if (event.key === "ArrowRight") {
+      showScene(
+        current === scenes.length - 1
+          ? 0
+          : current + 1
+      );
+    }
+
+    if (event.key === "ArrowLeft") {
+      showScene(current - 1);
+    }
+  });
+
+  /* ==========================================
+     NAVEGACIÓN TÁCTIL
+     ========================================== */
+
+  viewport.addEventListener(
+    "touchstart",
+    (event) => {
+      touchStart = {
+        x: event.changedTouches[0].screenX,
+        y: event.changedTouches[0].screenY
+      };
+    },
+    { passive: true }
+  );
+
+  viewport.addEventListener(
+    "touchend",
+    (event) => {
+      if (
+        !touchStart ||
+        event.target.closest("button, a")
+      ) {
+        return;
+      }
+
+      const dx =
+        event.changedTouches[0].screenX -
+        touchStart.x;
+
+      const dy =
+        event.changedTouches[0].screenY -
+        touchStart.y;
+
+      touchStart = null;
+
+      if (
+        Math.abs(dx) < 90 ||
+        Math.abs(dy) > 65
+      ) {
+        return;
+      }
+
+      if (dx < 0) {
+        showScene(
+          current === scenes.length - 1
+            ? 0
+            : current + 1
         );
+      } else {
+        showScene(current - 1);
+      }
+    },
+    { passive: true }
+  );
 
-        element.style.transitionDelay = `${currentDelay}ms`;
-        delayBySection.set(section, Math.min(currentDelay + 55, 220));
-    });
+  /* ==========================================
+     INICIALIZACIÓN
+     ========================================== */
 
-    /*
-     * Al bajar, los elementos llegan desde abajo.
-     * Al subir, llegan desde arriba.
-     * Al salir de la vista, se preparan para repetir la animación
-     * desde el lado correcto la próxima vez que entren.
-     */
-    if ("IntersectionObserver" in window) {
-        const revealObserver = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    const element = entry.target;
+  scenes.forEach((scene, index) => {
+    scene.setAttribute(
+      "aria-hidden",
+      String(index !== 0)
+    );
+  });
 
-                    if (entry.isIntersecting) {
-                        element.classList.remove(
-                            "reveal-from-above",
-                            "reveal-from-below"
-                        );
+  document.documentElement.classList.add("js");
 
-                        element.classList.add(
-                            scrollDirection === "up"
-                                ? "reveal-from-above"
-                                : "reveal-from-below"
-                        );
-
-                        /*
-                         * Dos requestAnimationFrame garantizan que el navegador
-                         * aplique primero el estado inicial y luego la transición.
-                         */
-                        element.classList.remove("is-visible");
-
-                        requestAnimationFrame(() => {
-                            requestAnimationFrame(() => {
-                                element.classList.add("is-visible");
-                            });
-                        });
-                    } else {
-                        element.classList.remove("is-visible");
-                        element.classList.remove(
-                            "reveal-from-above",
-                            "reveal-from-below"
-                        );
-
-                        /*
-                         * Si se baja, el elemento que sale queda arriba,
-                         * preparado para entrar desde arriba cuando se vuelva.
-                         * Si se sube, queda abajo y entra desde abajo al regresar.
-                         */
-                        element.classList.add(
-                            scrollDirection === "down"
-                                ? "reveal-from-above"
-                                : "reveal-from-below"
-                        );
-                    }
-                });
-            },
-            {
-                threshold: 0.12,
-                rootMargin: "0px 0px -5% 0px"
-            }
-        );
-
-        revealElements.forEach((element) => {
-            revealObserver.observe(element);
-        });
-    } else {
-        revealElements.forEach((element) => {
-            element.classList.add("is-visible");
-        });
-    }
-
-    // Actualiza el indicador de progreso de lectura superior.
-    function updateReadingProgress() {
-        if (!progressBar) {
-            return;
-        }
-
-        const scrollableHeight =
-            document.documentElement.scrollHeight - window.innerHeight;
-
-        const progress = scrollableHeight > 0
-            ? (window.scrollY / scrollableHeight) * 100
-            : 0;
-
-        progressBar.style.width =
-            `${Math.min(Math.max(progress, 0), 100)}%`;
-    }
-
-    window.addEventListener("scroll", updateReadingProgress, {
-        passive: true
-    });
-
-    window.addEventListener("resize", updateReadingProgress);
-    updateReadingProgress();
-
-    // El botón Comenzar desplaza hacia la sección de requisitos del vehículo.
-    document.querySelectorAll("[data-start-link]").forEach((link) => {
-        link.addEventListener("click", (event) => {
-            const vehicleSection = document.querySelector("#vehiculo");
-
-            if (!vehicleSection) {
-                return;
-            }
-
-            event.preventDefault();
-
-            vehicleSection.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-        });
-    });
-
-    // No se inventa el enlace de descarga de la aplicación.
-    if (appButton && appStatus) {
-        appButton.addEventListener("click", () => {
-            appStatus.textContent =
-                "El enlace oficial aún no está disponible. Podrás abrir la aplicación cuando Get Driver lo proporcione.";
-            appStatus.classList.add("app-status-visible");
-        });
-    }
+  updateControls();
+  playScene();
 });
