@@ -1,10 +1,3 @@
-
-/* =====================================================
-   GET DRIVER | ANIMACIÓN DE LAS 9 ESCENAS
-   Presentación visual, sin cuestionarios ni formularios.
-   Se puede avanzar aunque la mascota siga hablando.
-   ===================================================== */
-
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -19,9 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressFill = document.getElementById("progressFill");
   const viewport = document.querySelector(".viewport");
 
-  const reducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  );
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   if (
     !scenes.length ||
@@ -35,9 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     !progressFill ||
     !viewport
   ) {
-    console.error(
-      "Get Driver: falta un elemento necesario en index.html."
-    );
+    console.error("Get Driver: falta un elemento necesario en index.html.");
     return;
   }
 
@@ -47,30 +36,17 @@ document.addEventListener("DOMContentLoaded", () => {
   let typingInterval = null;
   let touchStart = null;
 
-  /* ==========================================
-     MASCOTA DE CADA ESCENA
-     ========================================== */
-
-  // Coloca una mascota independiente en cada escena.
-  // Si no existe el GIF, aparece el personaje temporal.
-
   scenes.forEach((scene) => {
-    const guide = template.content
-      .firstElementChild.cloneNode(true);
+    const guide = template.content.firstElementChild.cloneNode(true);
 
     const image = guide.querySelector(".guide-image");
     const character = guide.querySelector(".guide-character");
 
-    const title = scene.querySelector("h1, h2")
-      ?.textContent.trim() || "Get Driver";
-
+    const title = scene.querySelector("h1, h2")?.textContent.trim() || "Get Driver";
     image.alt = `Mascota de Get Driver: ${title}`;
 
     image.addEventListener("load", () => {
-      character.classList.toggle(
-        "has-image",
-        image.naturalWidth > 0
-      );
+      character.classList.toggle("has-image", image.naturalWidth > 0);
     });
 
     image.addEventListener("error", () => {
@@ -91,14 +67,9 @@ document.addEventListener("DOMContentLoaded", () => {
     image.src = scene.dataset.gif || "";
 
     if (image.complete && image.naturalWidth) {
-      image.closest(".guide-character")
-        .classList.add("has-image");
+      image.closest(".guide-character").classList.add("has-image");
     }
   }
-
-  /* ==========================================
-     LOGOTIPO
-     ========================================== */
 
   const brandImage = document.getElementById("brandImage");
   const brandSymbol = document.getElementById("brandSymbol");
@@ -117,16 +88,11 @@ document.addEventListener("DOMContentLoaded", () => {
     refreshBrand();
   }
 
-  /* ==========================================
-     PUNTOS DE NAVEGACIÓN
-     ========================================== */
-
   const dots = scenes.map((scene, index) => {
     const button = document.createElement("button");
 
     button.className = "scene-dot";
     button.type = "button";
-
     button.setAttribute(
       "aria-label",
       `Ir a ${scene.querySelector("h1, h2").textContent.trim()}`
@@ -137,24 +103,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     dotsHolder.appendChild(button);
-
     return button;
   });
 
-  /* ==========================================
-     TEMPORIZADORES
-     ========================================== */
-
   function schedule(callback, delay) {
-    const id = window.setTimeout(
-      callback,
-      reducedMotion.matches ? 0 : delay
-    );
-
+    const id = window.setTimeout(callback, reducedMotion.matches ? 0 : delay);
     timeouts.push(id);
   }
-
-  // Cada cambio cancela las animaciones anteriores.
 
   function cancelAnimations() {
     animationVersion++;
@@ -171,14 +126,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     scenes.forEach((scene) => {
-      scene.querySelector(".speech")
-        ?.classList.remove("is-typing");
+      scene.querySelector(".speech")?.classList.remove("is-typing");
     });
   }
-
-  /* ==========================================
-     ESTADO DE NAVEGACIÓN
-     ========================================== */
 
   function updateControls() {
     previous.disabled = current === 0;
@@ -190,19 +140,12 @@ document.addEventListener("DOMContentLoaded", () => {
           ? "Volver al inicio"
           : "Siguiente";
 
-    nextArrow.textContent =
-      current === scenes.length - 1
-        ? "↻"
-        : "→";
+    nextArrow.textContent = current === scenes.length - 1 ? "↻" : "→";
 
-    progressFill.style.width =
-      `${(current + 1) / scenes.length * 100}%`;
+    progressFill.style.width = `${((current + 1) / scenes.length) * 100}%`;
 
     dots.forEach((dot, index) => {
-      dot.classList.toggle(
-        "is-current",
-        index === current
-      );
+      dot.classList.toggle("is-current", index === current);
 
       if (index === current) {
         dot.setAttribute("aria-current", "step");
@@ -212,16 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ==========================================
-     DIÁLOGO ANIMADO
-     ========================================== */
-
-  function writeDialogue(
-    textElement,
-    bubble,
-    fullText,
-    version
-  ) {
+  function writeDialogue(textElement, bubble, fullText, version) {
     if (reducedMotion.matches) {
       textElement.textContent = fullText;
       bubble.classList.remove("is-typing");
@@ -236,28 +170,17 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Escribe poco a poco sin bloquear los botones.
-      position = Math.min(
-        position + 1,
-        characters.length
-      );
+      position = Math.min(position + 1, characters.length);
 
-      textElement.textContent = characters
-        .slice(0, position)
-        .join("");
+      textElement.textContent = characters.slice(0, position).join("");
 
       if (position >= characters.length) {
         window.clearInterval(typingInterval);
         typingInterval = null;
-
         bubble.classList.remove("is-typing");
       }
     }, 33);
   }
-
-  /* ==========================================
-     REPRODUCIR UNA ESCENA
-     ========================================== */
 
   function playScene() {
     cancelAnimations();
@@ -265,17 +188,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const version = animationVersion;
     const scene = scenes[current];
 
-    const character = scene.querySelector(
-      ".guide-character"
-    );
-
+    const character = scene.querySelector(".guide-character");
     const bubble = scene.querySelector(".speech");
     const speechText = scene.querySelector(".speech-text");
 
-    const elements = [
-      ...scene.querySelectorAll("[data-reveal]")
-    ];
-
+    const elements = [...scene.querySelectorAll("[data-reveal]")];
     const dialogue = scene.dataset.dialogue || "";
 
     loadMascot(scene);
@@ -283,27 +200,18 @@ document.addEventListener("DOMContentLoaded", () => {
     scene.classList.add("is-playing");
 
     character.classList.remove("is-entered");
-
-    bubble.classList.remove(
-      "is-visible",
-      "is-typing"
-    );
-
+    bubble.classList.remove("is-visible", "is-typing");
     speechText.textContent = "";
 
     elements.forEach((element) => {
       element.classList.remove("shown");
     });
 
-    // Permite reiniciar las animaciones CSS.
     void scene.offsetWidth;
-
-    /* MOVIMIENTO REDUCIDO */
 
     if (reducedMotion.matches) {
       character.classList.add("is-entered");
       bubble.classList.add("is-visible");
-
       speechText.textContent = dialogue;
 
       elements.forEach((element) => {
@@ -313,38 +221,20 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    /* 1. ENTRA LA MASCOTA */
-
     schedule(() => {
       if (version === animationVersion) {
         character.classList.add("is-entered");
       }
     }, 130);
 
-    /* 2. APARECE LA BURBUJA */
-
     schedule(() => {
       if (version !== animationVersion) {
         return;
       }
 
-      bubble.classList.add(
-        "is-visible",
-        "is-typing"
-      );
-
-      writeDialogue(
-        speechText,
-        bubble,
-        dialogue,
-        version
-      );
+      bubble.classList.add("is-visible", "is-typing");
+      writeDialogue(speechText, bubble, dialogue, version);
     }, 790);
-
-    /* 3. APARECEN LOS ELEMENTOS VISUALES */
-
-    // Cada elemento aparece después del anterior,
-    // mientras continúa la explicación de la mascota.
 
     elements.forEach((element, index) => {
       schedule(() => {
@@ -355,106 +245,63 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ==========================================
-     CAMBIAR DE ESCENA
-     ========================================== */
-
   function showScene(index) {
-    if (
-      !Number.isInteger(index) ||
-      index < 0 ||
-      index >= scenes.length
-    ) {
+    if (!Number.isInteger(index) || index < 0 || index >= scenes.length) {
       return;
     }
 
     cancelAnimations();
 
-    scenes[current].classList.remove(
-      "is-active",
-      "is-playing"
-    );
-
-    scenes[current].setAttribute(
-      "aria-hidden",
-      "true"
-    );
+    scenes[current].classList.remove("is-active", "is-playing");
+    scenes[current].setAttribute("aria-hidden", "true");
 
     current = index;
 
     const scene = scenes[current];
 
     scene.classList.add("is-active");
-
-    scene.setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
+    scene.setAttribute("aria-hidden", "false");
     scene.scrollTop = 0;
 
     updateControls();
     playScene();
   }
 
-  /* ==========================================
-     BOTONES PRINCIPALES
-     ========================================== */
-
   previous.addEventListener("click", () => {
     showScene(current - 1);
   });
 
   next.addEventListener("click", () => {
-    showScene(
-      current === scenes.length - 1
-        ? 0
-        : current + 1
-    );
+    showScene(current === scenes.length - 1 ? 0 : current + 1);
   });
 
   replay.addEventListener("click", () => {
     playScene();
   });
 
-  document.getElementById("goHome")
-    ?.addEventListener("click", (event) => {
-      event.preventDefault();
-      showScene(0);
-    });
-
-  /* ==========================================
-     NAVEGACIÓN CON TECLADO
-     ========================================== */
+  document.getElementById("goHome")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    showScene(0);
+  });
 
   document.addEventListener("keydown", (event) => {
     if (
       event.altKey ||
       event.ctrlKey ||
       event.metaKey ||
-      event.target.closest(
-        "button, a, input, textarea, select"
-      )
+      event.target.closest("button, a, input, textarea, select")
     ) {
       return;
     }
 
     if (event.key === "ArrowRight") {
-      showScene(
-        current === scenes.length - 1
-          ? 0
-          : current + 1
-      );
+      showScene(current === scenes.length - 1 ? 0 : current + 1);
     }
 
     if (event.key === "ArrowLeft") {
       showScene(current - 1);
     }
   });
-
-  /* ==========================================
-     NAVEGACIÓN TÁCTIL
-     ========================================== */
 
   viewport.addEventListener(
     "touchstart",
@@ -470,36 +317,21 @@ document.addEventListener("DOMContentLoaded", () => {
   viewport.addEventListener(
     "touchend",
     (event) => {
-      if (
-        !touchStart ||
-        event.target.closest("button, a")
-      ) {
+      if (!touchStart || event.target.closest("button, a")) {
         return;
       }
 
-      const dx =
-        event.changedTouches[0].screenX -
-        touchStart.x;
-
-      const dy =
-        event.changedTouches[0].screenY -
-        touchStart.y;
+      const dx = event.changedTouches[0].screenX - touchStart.x;
+      const dy = event.changedTouches[0].screenY - touchStart.y;
 
       touchStart = null;
 
-      if (
-        Math.abs(dx) < 90 ||
-        Math.abs(dy) > 65
-      ) {
+      if (Math.abs(dx) < 90 || Math.abs(dy) > 65) {
         return;
       }
 
       if (dx < 0) {
-        showScene(
-          current === scenes.length - 1
-            ? 0
-            : current + 1
-        );
+        showScene(current === scenes.length - 1 ? 0 : current + 1);
       } else {
         showScene(current - 1);
       }
@@ -507,15 +339,8 @@ document.addEventListener("DOMContentLoaded", () => {
     { passive: true }
   );
 
-  /* ==========================================
-     INICIALIZACIÓN
-     ========================================== */
-
   scenes.forEach((scene, index) => {
-    scene.setAttribute(
-      "aria-hidden",
-      String(index !== 0)
-    );
+    scene.setAttribute("aria-hidden", String(index !== 0));
   });
 
   document.documentElement.classList.add("js");
