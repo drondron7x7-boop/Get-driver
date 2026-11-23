@@ -3,11 +3,9 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  // =====================================================
-  // ELEMENTOS PRINCIPALES
-  // =====================================================
-
-  const scenes = [...document.querySelectorAll(".scene")];
+  const scenes = [
+    ...document.querySelectorAll(".scene")
+  ];
 
   const template =
     document.getElementById("mascotTemplate");
@@ -64,10 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let typeTimer = null;
   let touchStart = null;
 
-  // =====================================================
-  // AGREGAR ALEX A LAS NUEVE ESCENAS
-  // =====================================================
-
   scenes.forEach((scene) => {
 
     const mascot =
@@ -107,10 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   });
 
-  // =====================================================
-  // CARGAR LA MASCOTA
-  // =====================================================
-
   function loadMascot(scene) {
 
     const image =
@@ -121,7 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     image.dataset.requested = "true";
-
     image.src = scene.dataset.gif || "";
 
     if (image.complete && image.naturalWidth > 0) {
@@ -132,10 +121,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
   }
-
-  // =====================================================
-  // POSICIONAR BURBUJA Y PUNTA DEL DIÁLOGO
-  // =====================================================
 
   function alignDialogue(scene) {
 
@@ -201,9 +186,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const top =
         frame.bottom - actualH;
 
-      // Punto aproximado de diálogo del GIF actual.
-      // Se podrá modificar cuando haya otras poses.
-
       const mx = Number(
         scene.dataset.mouthX || 0.59
       );
@@ -233,8 +215,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Burbuja dentro del área disponible.
-
     const bubbleHeight =
       bubble.offsetHeight;
 
@@ -252,8 +232,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     bubble.style.top = `${bubbleTop}px`;
-
-    // Punta corta hacia Alex.
 
     const bubbleBox =
       bubble.getBoundingClientRect();
@@ -324,10 +302,6 @@ document.addEventListener("DOMContentLoaded", () => {
     alignDialogue(scenes[sceneIndex]);
   });
 
-  // =====================================================
-  // PUNTOS PARA CAMBIAR DE ESCENA
-  // =====================================================
-
   const dots = scenes.map((scene,index) => {
 
     const dot =
@@ -353,10 +327,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return dot;
 
   });
-
-  // =====================================================
-  // CONTROL DE ANIMACIONES
-  // =====================================================
 
   function schedule(callback,delay) {
 
@@ -385,10 +355,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
   }
-
-  // =====================================================
-  // ACTUALIZAR BOTONES Y PROGRESO
-  // =====================================================
 
   function updateNavigation() {
 
@@ -444,10 +410,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
-  // =====================================================
-  // PREPARAR BURBUJA SIN CAMBIOS DE TAMAÑO
-  // =====================================================
-
   function reserveSpeechHeight(textElement,message) {
 
     textElement.style.minHeight = "";
@@ -464,10 +426,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
-  // =====================================================
-  // ESCRIBIR DIÁLOGO PROGRESIVAMENTE
-  // =====================================================
-
   function typeDialogue(
     textElement,
     bubble,
@@ -478,7 +436,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (prefersReducedMotion.matches) {
 
       textElement.textContent = message;
-
       bubble.classList.add("is-complete");
 
       return;
@@ -514,10 +471,6 @@ document.addEventListener("DOMContentLoaded", () => {
     },34);
 
   }
-
-  // =====================================================
-  // REPRODUCIR ESCENA
-  // =====================================================
 
   function playScene() {
 
@@ -578,10 +531,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     alignDialogue(scene);
 
-    // Permite volver a reproducir las animaciones CSS.
     void scene.offsetWidth;
-
-    // Modo de movimiento reducido.
 
     if (prefersReducedMotion.matches) {
 
@@ -604,13 +554,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    // Fase 1: entrada de Alex.
-
     schedule(() => {
 
-      if (currentAnimation === animationId) {
-        character.classList.add("is-entered");
+      if (currentAnimation !== animationId) {
+        return;
       }
+
+      character.classList.add("is-entered");
 
       schedule(() => {
 
@@ -621,8 +571,6 @@ document.addEventListener("DOMContentLoaded", () => {
       },1000);
 
     },120);
-
-    // Fase 2: aparece el diálogo.
 
     schedule(() => {
 
@@ -643,8 +591,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     },750);
 
-    // Ajustar la punta de la burbuja.
-
     schedule(() => {
 
       if (currentAnimation === animationId) {
@@ -652,8 +598,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
     },1540);
-
-    // Fase 3: elementos visuales progresivos.
 
     reveals.forEach((item,index) => {
 
@@ -670,16 +614,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-    // Fase 4: pequeña celebración del cierre.
-
     if (celebration) {
 
       schedule(() => {
 
         if (currentAnimation === animationId) {
-          celebration.classList.add(
-            "is-celebrating"
-          );
+          celebration.classList.add("is-celebrating");
         }
 
       },1350 + reveals.length * 550);
@@ -687,10 +627,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
   }
-
-  // =====================================================
-  // CAMBIAR ENTRE ESCENAS
-  // =====================================================
 
   function showScene(index) {
 
@@ -737,10 +673,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
-  // =====================================================
-  // CONTROLES INFERIORES
-  // =====================================================
-
   previousButton.addEventListener("click", () => {
     showScene(sceneIndex - 1);
   });
@@ -767,10 +699,6 @@ document.addEventListener("DOMContentLoaded", () => {
       showScene(0);
 
     });
-
-  // =====================================================
-  // TECLADO: FLECHAS IZQUIERDA Y DERECHA
-  // =====================================================
 
   document.addEventListener("keydown",(event) => {
 
@@ -800,10 +728,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
   });
-
-  // =====================================================
-  // DESLIZAMIENTO EN CELULARES
-  // =====================================================
 
   viewport.addEventListener(
     "touchstart",
@@ -861,16 +785,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
       } else {
+
         showScene(sceneIndex - 1);
+
       }
 
     },
     {passive:true}
   );
-
-  // =====================================================
-  // INICIAR PRESENTACIÓN
-  // =====================================================
 
   scenes.forEach((scene,index) => {
 
@@ -884,7 +806,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.documentElement.classList.add("js");
 
   updateNavigation();
-
   playScene();
 
 });
