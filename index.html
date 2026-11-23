@@ -12,54 +12,44 @@
 </head>
 <body>
 
-  <!-- Íconos de los requisitos y documentos -->
   <svg class="svg-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <symbol id="i-id" viewBox="0 0 24 24">
       <rect x="2" y="4" width="20" height="16" rx="3"/>
       <circle cx="8" cy="10" r="2.5"/>
       <path d="M4.5 16c1-3 6-3 7 0m3-6h5m-5 4h5"/>
     </symbol>
-
     <symbol id="i-license" viewBox="0 0 24 24">
       <rect x="2" y="4" width="20" height="16" rx="3"/>
       <circle cx="8" cy="12" r="3"/>
       <path d="m6.5 12 1.5 1.5 3-4m4 0h5m-5 5h5"/>
     </symbol>
-
     <symbol id="i-shield" viewBox="0 0 24 24">
       <path d="M12 2 20 6v5c0 6-3 9-8 11-5-2-8-5-8-11V6Z"/>
       <path d="m8 12 3 3 5-6"/>
     </symbol>
-
     <symbol id="i-file" viewBox="0 0 24 24">
       <path d="M5 2h10l5 5v15H5Z"/>
       <path d="M15 2v6h5M8 12h9M8 16h7"/>
     </symbol>
-
     <symbol id="i-stamp" viewBox="0 0 24 24">
       <path d="M5 21h14M8 17h8l2 3H6Zm1-9c-1-1-1.5-2.2-1.5-3.5a4.5 4.5 0 0 1 9 0c0 1.3-.5 2.5-1.5 3.5L14 12H10Z"/>
     </symbol>
-
     <symbol id="i-camera" viewBox="0 0 24 24">
       <path d="M3 7h4l2-2h6l2 2h4v13H3Z"/>
       <circle cx="12" cy="13" r="4"/>
     </symbol>
-
     <symbol id="i-upload" viewBox="0 0 24 24">
       <path d="M12 16V3m-5 5 5-5 5 5M4 16v5h16v-5"/>
     </symbol>
-
     <symbol id="i-check" viewBox="0 0 24 24">
       <path d="m4 12 5 5L20 6"/>
     </symbol>
-
     <symbol id="i-search" viewBox="0 0 24 24">
       <circle cx="10" cy="10" r="6"/>
       <path d="m15 15 6 6"/>
     </symbol>
   </svg>
 
-  <!-- Personaje Alex y burbuja limpia -->
   <template id="mascotTemplate">
     <aside class="guide" aria-label="Alex, guía de Get Driver">
       <div class="speech">
@@ -70,25 +60,25 @@
         <div class="character-entrance">
           <div class="mascot-pose">
             <div class="mascot-halo"></div>
-
             <img
               class="mascot-image"
               alt="Alex, mascota de Get Driver"
               decoding="async"
             >
-
             <div class="mascot-placeholder" aria-hidden="true">
               <span class="placeholder-head">● ●<b>⌣</b></span>
               <small>ALEX</small>
             </div>
-
             <div class="character-shadow"></div>
           </div>
         </div>
       </div>
 
-      <svg class="dialogue-pointer" aria-hidden="true"
-           preserveAspectRatio="none">
+      <svg
+        class="dialogue-pointer"
+        aria-hidden="true"
+        preserveAspectRatio="none"
+      >
         <path class="pointer-tail"></path>
       </svg>
     </aside>
@@ -96,18 +86,18 @@
 
   <div class="app" id="inicio">
 
-    <!-- ENCABEZADO CON LOGO BLANCO OFICIAL -->
     <header class="topbar">
-
-      <a class="brand" id="homeLink"
-         href="#inicio" aria-label="Volver al comienzo">
-
+      <a
+        class="brand"
+        id="homeLink"
+        href="#inicio"
+        aria-label="Volver al comienzo"
+      >
         <picture class="brand-plate">
           <source
             media="(max-width:680px)"
             srcset="assets/logo/get-driver-sin-lema-blanco.png"
           >
-
           <img
             class="brand-image"
             src="assets/logo/get-driver-con-lema-blanco.png"
@@ -133,7 +123,6 @@
 
     <main class="viewport" id="viewport">
 
-      <!-- ESCENA 1: BIENVENIDA -->
       <section
         class="scene is-active"
         data-side="left"
@@ -144,40 +133,48 @@
       >
         <div class="scene-shell">
           <div class="scene-content">
-
-            <p class="eyebrow"
-               data-reveal data-motion="slide-left">
+            <p class="eyebrow" data-reveal data-motion="slide-left">
               BIENVENIDO A GET DRIVER
             </p>
-
             <h1 id="t1" data-reveal data-motion="zoom">
               Tu próxima ruta <em>comienza aquí.</em>
             </h1>
-
             <p class="lead" data-reveal data-motion="fade">
               Descubre los requisitos y los pasos para afiliarte como conductor.
             </p>
 
             <div class="route-board" data-reveal data-motion="expand">
-
-              <svg viewBox="0 0 620 250" role="img"
-                   aria-label="Ruta punteada desde inicio hasta destino">
-
+              <svg
+                viewBox="0 0 620 250"
+                role="img"
+                aria-label="Ruta punteada desde inicio hasta destino"
+              >
                 <defs>
-                  <pattern id="mapGrid" width="46" height="46"
-                           patternUnits="userSpaceOnUse">
-                    <path d="M46 0H0V46"
-                          fill="none" stroke="#B3D4E7"
-                          stroke-opacity=".16"/>
+                  <pattern
+                    id="mapGrid"
+                    width="46"
+                    height="46"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <path
+                      d="M46 0H0V46"
+                      fill="none"
+                      stroke="#B3D4E7"
+                      stroke-opacity=".16"
+                    />
                   </pattern>
-
-                  <path id="journeyLine"
+                  <path
+                    id="journeyLine"
                     d="M72 178C145 185 125 64 215 88S325 205 408 154 493 70 550 78"
                   />
-
-                  <mask id="routeRevealMask"
-                        maskUnits="userSpaceOnUse"
-                        x="0" y="0" width="620" height="250">
+                  <mask
+                    id="routeRevealMask"
+                    maskUnits="userSpaceOnUse"
+                    x="0"
+                    y="0"
+                    width="620"
+                    height="250"
+                  >
                     <use
                       href="#journeyLine"
                       class="route-mask-stroke"
@@ -189,8 +186,7 @@
                   </mask>
                 </defs>
 
-                <rect width="620" height="250"
-                      fill="url(#mapGrid)"/>
+                <rect width="620" height="250" fill="url(#mapGrid)"/>
 
                 <g fill="#8BB4CF" opacity=".15">
                   <rect x="35" y="38" width="78" height="64" rx="10"/>
@@ -207,7 +203,6 @@
                   stroke-width="20"
                   stroke-linecap="round"
                 />
-
                 <use
                   href="#journeyLine"
                   class="route-dots"
@@ -219,8 +214,14 @@
                   stroke-linecap="round"
                 />
 
-                <circle cx="72" cy="178" r="12"
-                        fill="#FFDE00" stroke="#fff" stroke-width="4"/>
+                <circle
+                  cx="72"
+                  cy="178"
+                  r="12"
+                  fill="#FFDE00"
+                  stroke="#fff"
+                  stroke-width="4"
+                />
 
                 <g transform="translate(550 78)">
                   <path
@@ -230,11 +231,20 @@
                   <circle cy="1" r="9" fill="#0E1F3D"/>
                 </g>
 
-                <text x="42" y="214" fill="white"
-                      font-size="17" font-weight="800">INICIO</text>
-
-                <text x="509" y="35" fill="white"
-                      font-size="17" font-weight="800">DESTINO</text>
+                <text
+                  x="42"
+                  y="214"
+                  fill="white"
+                  font-size="17"
+                  font-weight="800"
+                >INICIO</text>
+                <text
+                  x="509"
+                  y="35"
+                  fill="white"
+                  font-size="17"
+                  font-weight="800"
+                >DESTINO</text>
               </svg>
 
               <div class="map-caption">
@@ -242,12 +252,10 @@
                 TU RECORRIDO GET DRIVER
               </div>
             </div>
-
           </div>
         </div>
       </section>
 
-      <!-- ESCENA 2: FOTOS REALES DE VEHÍCULOS -->
       <section
         class="scene"
         data-side="right"
@@ -258,24 +266,22 @@
       >
         <div class="scene-shell">
           <div class="scene-content">
-
-            <p class="eyebrow"
-               data-reveal data-motion="slide-right">
+            <p class="eyebrow" data-reveal data-motion="slide-right">
               ETAPA 1 · VEHÍCULO
             </p>
-
             <h2 id="t2" data-reveal data-motion="zoom">
               Conoce los <em>vehículos.</em>
             </h2>
-
             <p class="lead" data-reveal data-motion="fade">
               Tres tipos de vehículos que debes tener en cuenta.
             </p>
 
             <div class="vehicle-grid">
-
-              <article class="vehicle-card"
-                       data-reveal data-motion="slide-left">
+              <article
+                class="vehicle-card"
+                data-reveal
+                data-motion="slide-left"
+              >
                 <div class="vehicle-art">
                   <img
                     src="assets/vehiculo/sedan.png"
@@ -286,8 +292,11 @@
                 <strong>Sedán</strong>
               </article>
 
-              <article class="vehicle-card"
-                       data-reveal data-motion="zoom">
+              <article
+                class="vehicle-card"
+                data-reveal
+                data-motion="zoom"
+              >
                 <div class="vehicle-art">
                   <img
                     src="assets/vehiculo/hatchback.png"
@@ -298,8 +307,11 @@
                 <strong>Hatchback</strong>
               </article>
 
-              <article class="vehicle-card"
-                       data-reveal data-motion="slide-right">
+              <article
+                class="vehicle-card"
+                data-reveal
+                data-motion="slide-right"
+              >
                 <div class="vehicle-art">
                   <img
                     src="assets/vehiculo/suv.png"
@@ -309,29 +321,23 @@
                 </div>
                 <strong>SUV</strong>
               </article>
-
             </div>
 
-            <!-- El año 2010 y una única flecha -->
             <div class="year-banner" data-reveal data-motion="stamp">
               <span class="year-big">2010</span>
-
               <div class="year-copy">
                 <strong>MODELOS DE AUTOS</strong>
                 <p>Del 2010 en adelante</p>
               </div>
-
               <div class="year-arrow" aria-hidden="true">
                 <span></span>
                 <i></i>
               </div>
             </div>
-
           </div>
         </div>
       </section>
 
-      <!-- ESCENA 3: DOCUMENTOS -->
       <section
         class="scene"
         data-side="left"
@@ -342,22 +348,17 @@
       >
         <div class="scene-shell">
           <div class="scene-content">
-
-            <p class="eyebrow"
-               data-reveal data-motion="slide-left">
+            <p class="eyebrow" data-reveal data-motion="slide-left">
               ETAPA 2 · DOCUMENTOS
             </p>
-
             <h2 id="t3" data-reveal data-motion="wipe">
               Prepara tus <em>documentos.</em>
             </h2>
-
             <p class="lead" data-reveal data-motion="fade">
               Necesitarás dos personales y dos del vehículo.
             </p>
 
             <div class="document-grid">
-
               <article class="document-card" data-reveal data-motion="flip">
                 <span class="icon-surface">
                   <svg><use href="#i-id"/></svg>
@@ -397,14 +398,11 @@
                   <small>Del vehículo</small>
                 </div>
               </article>
-
             </div>
-
           </div>
         </div>
       </section>
 
-      <!-- ESCENA 4: ANTECEDENTES RESUMIDOS -->
       <section
         class="scene scene-antecedents"
         data-side="right"
@@ -415,9 +413,7 @@
       >
         <div class="scene-shell">
           <div class="scene-content">
-
-            <p class="eyebrow"
-               data-reveal data-motion="slide-right">
+            <p class="eyebrow" data-reveal data-motion="slide-right">
               ETAPA 2 · DOCUMENTOS
             </p>
 
@@ -426,9 +422,11 @@
             </h2>
 
             <div class="background-docs">
-
-              <article class="background-card"
-                       data-reveal data-motion="stamp">
+              <article
+                class="background-card"
+                data-reveal
+                data-motion="stamp"
+              >
                 <span class="stamp-icon">
                   <svg><use href="#i-stamp"/></svg>
                 </span>
@@ -436,22 +434,21 @@
                 <span class="stamp-seal">Virtual: aprox. S/ 5.40</span>
               </article>
 
-              <article class="background-card"
-                       data-reveal data-motion="stamp">
+              <article
+                class="background-card"
+                data-reveal
+                data-motion="stamp"
+              >
                 <span class="stamp-icon">
                   <svg><use href="#i-file"/></svg>
                 </span>
                 <strong>Antecedentes penales</strong>
                 <span class="stamp-seal">Costo independiente</span>
               </article>
-
             </div>
 
-            <div class="foreign-note"
-                 data-reveal data-motion="slide-left">
-
+            <div class="foreign-note" data-reveal data-motion="slide-left">
               <span class="note-symbol">i</span>
-
               <p>
                 <strong>Conductores extranjeros:</strong>
                 pueden consultar los requisitos según su documento en la
@@ -460,12 +457,10 @@
                 Conviene confirmar la atención antes de acudir.
               </p>
             </div>
-
           </div>
         </div>
       </section>
 
-      <!-- ESCENA 5: FOTOS EXTERIORES -->
       <section
         class="scene"
         data-side="left"
@@ -476,22 +471,17 @@
       >
         <div class="scene-shell">
           <div class="scene-content">
-
-            <p class="eyebrow"
-               data-reveal data-motion="slide-left">
+            <p class="eyebrow" data-reveal data-motion="slide-left">
               ETAPA 3 · FOTOGRAFÍAS
             </p>
-
             <h2 id="t5" data-reveal data-motion="zoom">
               Cuatro vistas <em>exteriores.</em>
             </h2>
-
             <p class="lead" data-reveal data-motion="fade">
               Ejemplo de las cuatro vistas del mismo vehículo.
             </p>
 
             <div class="photo-grid">
-
               <article class="photo-card" data-reveal data-motion="photo">
                 <div class="photo-art">
                   <img
@@ -535,14 +525,11 @@
                 </div>
                 <strong>Lateral derecho</strong>
               </article>
-
             </div>
-
           </div>
         </div>
       </section>
 
-      <!-- ESCENA 6: INTERIORES Y SELFIE COMPLETA -->
       <section
         class="scene"
         data-side="right"
@@ -553,24 +540,22 @@
       >
         <div class="scene-shell">
           <div class="scene-content">
-
-            <p class="eyebrow"
-               data-reveal data-motion="slide-right">
+            <p class="eyebrow" data-reveal data-motion="slide-right">
               ETAPA 3 · FOTOGRAFÍAS
             </p>
-
             <h2 id="t6" data-reveal data-motion="zoom">
               Interior <em>y selfie.</em>
             </h2>
-
             <p class="lead" data-reveal data-motion="fade">
               Solo faltan tres imágenes más.
             </p>
 
             <div class="interior-grid">
-
-              <article class="interior-card"
-                       data-reveal data-motion="camera-zoom">
+              <article
+                class="interior-card"
+                data-reveal
+                data-motion="camera-zoom"
+              >
                 <div class="interior-art">
                   <img
                     src="assets/vehiculo/interior-delantero.png"
@@ -581,8 +566,11 @@
                 <strong>Interior delantero</strong>
               </article>
 
-              <article class="interior-card"
-                       data-reveal data-motion="camera-zoom">
+              <article
+                class="interior-card"
+                data-reveal
+                data-motion="camera-zoom"
+              >
                 <div class="interior-art">
                   <img
                     src="assets/vehiculo/interior-trasero.png"
@@ -593,8 +581,11 @@
                 <strong>Interior trasero</strong>
               </article>
 
-              <article class="interior-card"
-                       data-reveal data-motion="zoom">
+              <article
+                class="interior-card"
+                data-reveal
+                data-motion="zoom"
+              >
                 <div class="interior-art selfie-art">
                   <img
                     class="selfie-photo"
@@ -606,22 +597,18 @@
                 <strong>Tu selfie</strong>
                 <small>Sin lentes oscuros</small>
               </article>
-
             </div>
 
-            <div class="count-banner"
-                 data-reveal data-motion="stamp">
+            <div class="count-banner" data-reveal data-motion="stamp">
               <svg class="line-icon">
                 <use href="#i-camera"/>
               </svg>
               <strong>6 fotos del auto + 1 selfie</strong>
             </div>
-
           </div>
         </div>
       </section>
 
-      <!-- ESCENA 7: REGISTRO EN LA APP -->
       <section
         class="scene"
         data-side="left"
@@ -632,21 +619,19 @@
       >
         <div class="scene-shell">
           <div class="scene-content">
-
-            <p class="eyebrow"
-               data-reveal data-motion="slide-left">
+            <p class="eyebrow" data-reveal data-motion="slide-left">
               ETAPA 4 · APLICACIÓN
             </p>
-
             <h2 id="t7" data-reveal data-motion="wipe">
               Inicia tu <em>registro.</em>
             </h2>
 
             <div class="app-layout">
-
-              <div class="app-preview"
-                   data-reveal data-motion="camera-zoom">
-
+              <div
+                class="app-preview"
+                data-reveal
+                data-motion="camera-zoom"
+              >
                 <div class="screen-frame">
                   <img
                     src="assets/app/crear-cuenta.jpg"
@@ -654,7 +639,6 @@
                     loading="lazy"
                   >
                 </div>
-
                 <div class="screen-caption">
                   <img
                     src="assets/logo/get-driver-isotipo.png"
@@ -666,40 +650,28 @@
               </div>
 
               <div class="app-steps">
-
-                <div class="app-step"
-                     data-reveal data-motion="step-slide">
+                <div class="app-step" data-reveal data-motion="step-slide">
                   <b>1</b>
                   <p><strong>Descarga</strong> GET DRIVER Conductor.</p>
                 </div>
-
-                <div class="app-step"
-                     data-reveal data-motion="step-slide">
+                <div class="app-step" data-reveal data-motion="step-slide">
                   <b>2</b>
                   <p><strong>Inicia sesión</strong> con tu cuenta de pasajero.</p>
                 </div>
-
-                <div class="app-step"
-                     data-reveal data-motion="step-slide">
+                <div class="app-step" data-reveal data-motion="step-slide">
                   <b>3</b>
                   <p><strong>Completa</strong> tus datos personales y de contacto.</p>
                 </div>
-
-                <div class="app-step"
-                     data-reveal data-motion="step-slide">
+                <div class="app-step" data-reveal data-motion="step-slide">
                   <b>4</b>
                   <p><strong>Registra</strong> los datos del vehículo.</p>
                 </div>
-
               </div>
-
             </div>
-
           </div>
         </div>
       </section>
 
-      <!-- ESCENA 8: ENVÍO -->
       <section
         class="scene"
         data-side="right"
@@ -710,20 +682,19 @@
       >
         <div class="scene-shell">
           <div class="scene-content">
-
-            <p class="eyebrow"
-               data-reveal data-motion="slide-right">
+            <p class="eyebrow" data-reveal data-motion="slide-right">
               ETAPA 4 · APLICACIÓN
             </p>
-
             <h2 id="t8" data-reveal data-motion="zoom">
               Envía tu <em>solicitud.</em>
             </h2>
 
             <div class="process-list">
-
-              <article class="process-item"
-                       data-reveal data-motion="process-enter">
+              <article
+                class="process-item"
+                data-reveal
+                data-motion="process-enter"
+              >
                 <div class="process-icon">
                   <svg class="line-icon">
                     <use href="#i-upload"/>
@@ -736,8 +707,11 @@
                 </div>
               </article>
 
-              <article class="process-item"
-                       data-reveal data-motion="process-enter">
+              <article
+                class="process-item"
+                data-reveal
+                data-motion="process-enter"
+              >
                 <div class="process-icon">
                   <svg class="line-icon">
                     <use href="#i-check"/>
@@ -750,8 +724,11 @@
                 </div>
               </article>
 
-              <article class="process-item"
-                       data-reveal data-motion="process-enter">
+              <article
+                class="process-item"
+                data-reveal
+                data-motion="process-enter"
+              >
                 <div class="process-icon">
                   <svg class="line-icon">
                     <use href="#i-search"/>
@@ -763,14 +740,11 @@
                   <p>Consulta el resultado en la aplicación.</p>
                 </div>
               </article>
-
             </div>
-
           </div>
         </div>
       </section>
 
-      <!-- ESCENA 9: CIERRE -->
       <section
         class="scene"
         data-side="left"
@@ -781,40 +755,31 @@
       >
         <div class="scene-shell">
           <div class="scene-content">
-
-            <p class="eyebrow"
-               data-reveal data-motion="slide-left">
+            <p class="eyebrow" data-reveal data-motion="slide-left">
               CONSEJOS Y DESPEDIDA
             </p>
-
             <h2 id="t9" data-reveal data-motion="zoom">
               ¡Ya conoces <em>la ruta!</em>
             </h2>
-
             <p class="lead" data-reveal data-motion="fade">
               Dos consejos importantes antes de comenzar.
             </p>
 
             <div class="advice-list">
-
-              <article class="advice-card"
-                       data-reveal data-motion="flip">
+              <article class="advice-card" data-reveal data-motion="flip">
                 <span>✦</span>
                 <div>
                   <strong>Buena presentación personal</strong>
                   <p>Cuida tu presentación durante el servicio.</p>
                 </div>
               </article>
-
-              <article class="advice-card"
-                       data-reveal data-motion="flip">
+              <article class="advice-card" data-reveal data-motion="flip">
                 <span>♥</span>
                 <div>
                   <strong>Excelente atención</strong>
                   <p>Brinda un trato cordial y respetuoso.</p>
                 </div>
               </article>
-
             </div>
 
             <div class="goodbye-banner" data-reveal data-motion="stamp">
@@ -828,12 +793,8 @@
             </div>
 
             <div class="celebration" aria-hidden="true">
-              <i>✦</i>
-              <i>✧</i>
-              <i>✦</i>
-              <i>✧</i>
+              <i>✦</i><i>✧</i><i>✦</i><i>✧</i>
             </div>
-
           </div>
         </div>
       </section>
@@ -851,11 +812,16 @@
       </button>
 
       <div class="controls-middle">
-        <div class="dots" id="sceneDots"
-             aria-label="Navegación por escenas"></div>
-
-        <button class="replay-btn"
-                id="replayButton" type="button">
+        <div
+          class="dots"
+          id="sceneDots"
+          aria-label="Navegación por escenas"
+        ></div>
+        <button
+          class="replay-btn"
+          id="replayButton"
+          type="button"
+        >
           ↻ Repetir escena
         </button>
       </div>
