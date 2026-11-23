@@ -1,350 +1,890 @@
+
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const scenes = [...document.querySelectorAll(".scene")];
-  const template = document.getElementById("guideTemplate");
-  const previous = document.getElementById("prevButton");
-  const next = document.getElementById("nextButton");
-  const nextLabel = document.getElementById("nextLabel");
-  const nextArrow = document.getElementById("nextArrow");
-  const replay = document.getElementById("replayButton");
-  const dotsHolder = document.getElementById("sceneDots");
-  const progressFill = document.getElementById("progressFill");
-  const viewport = document.querySelector(".viewport");
 
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  // =====================================================
+  // ELEMENTOS PRINCIPALES
+  // =====================================================
+
+  const scenes = [...document.querySelectorAll(".scene")];
+
+  const template =
+    document.getElementById("mascotTemplate");
+
+  const previousButton =
+    document.getElementById("prevButton");
+
+  const nextButton =
+    document.getElementById("nextButton");
+
+  const nextLabel =
+    document.getElementById("nextLabel");
+
+  const nextArrow =
+    document.getElementById("nextArrow");
+
+  const replayButton =
+    document.getElementById("replayButton");
+
+  const dotsContainer =
+    document.getElementById("sceneDots");
+
+  const progressFill =
+    document.getElementById("progressFill");
+
+  const viewport =
+    document.getElementById("viewport");
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  );
 
   if (
     !scenes.length ||
     !template ||
-    !previous ||
-    !next ||
+    !previousButton ||
+    !nextButton ||
     !nextLabel ||
     !nextArrow ||
-    !replay ||
-    !dotsHolder ||
+    !replayButton ||
+    !dotsContainer ||
     !progressFill ||
     !viewport
   ) {
-    console.error("Get Driver: falta un elemento necesario en index.html.");
+    console.error(
+      "Get Driver: faltan elementos del HTML para iniciar."
+    );
     return;
   }
 
-  let current = 0;
-  let animationVersion = 0;
-  let timeouts = [];
-  let typingInterval = null;
+  let sceneIndex = 0;
+  let animationId = 0;
+  let pendingTimers = [];
+  let typeTimer = null;
   let touchStart = null;
 
+  // =====================================================
+  // AGREGAR ALEX A LAS NUEVE ESCENAS
+  // =====================================================
+
   scenes.forEach((scene) => {
-    const guide = template.content.firstElementChild.cloneNode(true);
 
-    const image = guide.querySelector(".guide-image");
-    const character = guide.querySelector(".guide-character");
+    const mascot =
+      template.content.firstElementChild.cloneNode(true);
 
-    const title = scene.querySelector("h1, h2")?.textContent.trim() || "Get Driver";
-    image.alt = `Mascota de Get Driver: ${title}`;
+    const image =
+      mascot.querySelector(".mascot-image");
+
+    const pose =
+      mascot.querySelector(".mascot-pose");
+
+    const title =
+      scene.querySelector("h1,h2")?.textContent.trim() ||
+      "Get Driver";
+
+    image.alt =
+      `Mascota de Get Driver presentando: ${title}`;
 
     image.addEventListener("load", () => {
-      character.classList.toggle("has-image", image.naturalWidth > 0);
+
+      pose.classList.toggle(
+        "has-image",
+        image.naturalWidth > 0
+      );
+
+      if (scene.classList.contains("is-active")) {
+        alignDialogue(scene);
+      }
+
     });
 
     image.addEventListener("error", () => {
-      character.classList.remove("has-image");
+      pose.classList.remove("has-image");
     });
 
-    scene.querySelector(".scene-shell").prepend(guide);
+    scene.querySelector(".scene-shell").prepend(mascot);
+
   });
 
-  function loadMascot(scene) {
-    const image = scene.querySelector(".guide-image");
+  // =====================================================
+  // CARGAR LA MASCOTA
+  // =====================================================
 
-    if (!image || image.dataset.loaded) {
+  function loadMascot(scene) {
+
+    const image =
+      scene.querySelector(".mascot-image");
+
+    if (!image || image.dataset.requested) {
       return;
     }
 
-    image.dataset.loaded = "requested";
+    image.dataset.requested = "true";
+
     image.src = scene.dataset.gif || "";
 
-    if (image.complete && image.naturalWidth) {
-      image.closest(".guide-character").classList.add("has-image");
+    if (image.complete && image.naturalWidth > 0) {
+
+      image.closest(".mascot-pose")
+        .classList.add("has-image");
+
     }
+
   }
 
-  const brandImage = document.getElementById("brandImage");
-  const brandSymbol = document.getElementById("brandSymbol");
+  // =====================================================
+  // POSICIONAR BURBUJA Y PUNTA DEL DIÁLOGO
+  // =====================================================
 
-  if (brandImage && brandSymbol) {
-    const refreshBrand = () => {
-      brandSymbol.classList.toggle(
-        "has-image",
-        brandImage.complete && brandImage.naturalWidth > 0
+  function alignDialogue(scene) {
+
+    if (!scene.classList.contains("is-active")) {
+      return;
+    }
+
+    const guide =
+      scene.querySelector(".guide");
+
+    const bubble =
+      guide?.querySelector(".speech");
+
+    const image =
+      guide?.querySelector(".mascot-image");
+
+    const placeholder =
+      guide?.querySelector(".placeholder-head");
+
+    const pointer =
+      guide?.querySelector(".dialogue-pointer");
+
+    const tail =
+      guide?.querySelector(".pointer-tail");
+
+    if (
+      !guide ||
+      !bubble ||
+      !pointer ||
+      !tail
+    ) {
+      return;
+    }
+
+    const guideBox =
+      guide.getBoundingClientRect();
+
+    const imageLoaded =
+      image && image.naturalWidth > 0;
+
+    let mouthX;
+    let mouthY;
+
+    if (imageLoaded) {
+
+      const frame =
+        image.getBoundingClientRect();
+
+      const ratio = Math.min(
+        frame.width / image.naturalWidth,
+        frame.height / image.naturalHeight
       );
-    };
 
-    brandImage.addEventListener("load", refreshBrand);
-    brandImage.addEventListener("error", refreshBrand);
+      const actualW =
+        image.naturalWidth * ratio;
 
-    refreshBrand();
-  }
+      const actualH =
+        image.naturalHeight * ratio;
 
-  const dots = scenes.map((scene, index) => {
-    const button = document.createElement("button");
+      const left =
+        frame.left + (frame.width - actualW) / 2;
 
-    button.className = "scene-dot";
-    button.type = "button";
-    button.setAttribute(
-      "aria-label",
-      `Ir a ${scene.querySelector("h1, h2").textContent.trim()}`
+      const top =
+        frame.bottom - actualH;
+
+      // Punto aproximado de diálogo del GIF actual.
+      // Se podrá modificar cuando haya otras poses.
+
+      const mx = Number(
+        scene.dataset.mouthX || 0.59
+      );
+
+      const my = Number(
+        scene.dataset.mouthY || 0.265
+      );
+
+      mouthX =
+        left + actualW * mx - guideBox.left;
+
+      mouthY =
+        top + actualH * my - guideBox.top;
+
+    } else if (placeholder) {
+
+      const box =
+        placeholder.getBoundingClientRect();
+
+      mouthX =
+        box.left + box.width / 2 - guideBox.left;
+
+      mouthY =
+        box.top + box.height * .7 - guideBox.top;
+
+    } else {
+      return;
+    }
+
+    // Burbuja dentro del área disponible.
+
+    const bubbleHeight =
+      bubble.offsetHeight;
+
+    const upperLimit = Math.max(
+      6,
+      guide.clientHeight - bubbleHeight - 8
     );
 
-    button.addEventListener("click", () => {
+    const preferredTop =
+      mouthY - bubbleHeight * .53;
+
+    const bubbleTop = Math.max(
+      6,
+      Math.min(upperLimit, preferredTop)
+    );
+
+    bubble.style.top = `${bubbleTop}px`;
+
+    // Punta corta hacia Alex.
+
+    const bubbleBox =
+      bubble.getBoundingClientRect();
+
+    const rightSide =
+      scene.dataset.side === "right";
+
+    const fromX =
+      (
+        rightSide
+          ? bubbleBox.right
+          : bubbleBox.left
+      ) - guideBox.left;
+
+    const fromY =
+      bubbleBox.top -
+      guideBox.top +
+      bubbleBox.height * .52;
+
+    const dx = mouthX - fromX;
+    const dy = mouthY - fromY;
+
+    const distance = Math.max(
+      1,
+      Math.hypot(dx,dy)
+    );
+
+    const pointerLength = Math.min(
+      29,
+      distance * .45
+    );
+
+    const toX =
+      fromX + (dx / distance) * pointerLength;
+
+    const toY =
+      fromY + (dy / distance) * pointerLength;
+
+    const controlX =
+      (fromX + toX) / 2;
+
+    const controlY =
+      (fromY + toY) / 2;
+
+    const width =
+      Math.max(1,guideBox.width);
+
+    const height =
+      Math.max(1,guideBox.height);
+
+    pointer.setAttribute(
+      "viewBox",
+      `0 0 ${width} ${height}`
+    );
+
+    const path = [
+      `M ${fromX} ${fromY - 9}`,
+      `Q ${controlX} ${controlY - 6} ${toX} ${toY}`,
+      `Q ${controlX} ${controlY + 6} ${fromX} ${fromY + 9}`,
+      "Z"
+    ].join(" ");
+
+    tail.setAttribute("d", path);
+
+  }
+
+  window.addEventListener("resize", () => {
+    alignDialogue(scenes[sceneIndex]);
+  });
+
+  // =====================================================
+  // PUNTOS PARA CAMBIAR DE ESCENA
+  // =====================================================
+
+  const dots = scenes.map((scene,index) => {
+
+    const dot =
+      document.createElement("button");
+
+    dot.type = "button";
+    dot.className = "dot";
+
+    const title =
+      scene.querySelector("h1,h2").textContent.trim();
+
+    dot.setAttribute(
+      "aria-label",
+      `Ir a ${title}`
+    );
+
+    dot.addEventListener("click", () => {
       showScene(index);
     });
 
-    dotsHolder.appendChild(button);
-    return button;
+    dotsContainer.append(dot);
+
+    return dot;
+
   });
 
-  function schedule(callback, delay) {
-    const id = window.setTimeout(callback, reducedMotion.matches ? 0 : delay);
-    timeouts.push(id);
+  // =====================================================
+  // CONTROL DE ANIMACIONES
+  // =====================================================
+
+  function schedule(callback,delay) {
+
+    const timer =
+      window.setTimeout(callback,delay);
+
+    pendingTimers.push(timer);
+
   }
 
   function cancelAnimations() {
-    animationVersion++;
 
-    timeouts.forEach((id) => {
-      window.clearTimeout(id);
+    animationId++;
+
+    pendingTimers.forEach((timer) => {
+      window.clearTimeout(timer);
     });
 
-    timeouts = [];
+    pendingTimers = [];
 
-    if (typingInterval !== null) {
-      window.clearInterval(typingInterval);
-      typingInterval = null;
+    if (typeTimer !== null) {
+
+      window.clearInterval(typeTimer);
+      typeTimer = null;
+
     }
 
-    scenes.forEach((scene) => {
-      scene.querySelector(".speech")?.classList.remove("is-typing");
-    });
   }
 
-  function updateControls() {
-    previous.disabled = current === 0;
+  // =====================================================
+  // ACTUALIZAR BOTONES Y PROGRESO
+  // =====================================================
 
-    nextLabel.textContent =
-      current === 0
-        ? "Comenzar"
-        : current === scenes.length - 1
-          ? "Volver al inicio"
-          : "Siguiente";
+  function updateNavigation() {
 
-    nextArrow.textContent = current === scenes.length - 1 ? "↻" : "→";
+    previousButton.disabled =
+      sceneIndex === 0;
 
-    progressFill.style.width = `${((current + 1) / scenes.length) * 100}%`;
+    if (sceneIndex === 0) {
 
-    dots.forEach((dot, index) => {
-      dot.classList.toggle("is-current", index === current);
+      nextLabel.textContent = "Comenzar";
+      nextArrow.textContent = "→";
 
-      if (index === current) {
-        dot.setAttribute("aria-current", "step");
+    } else if (sceneIndex === scenes.length - 1) {
+
+      nextLabel.textContent = "Reiniciar";
+      nextArrow.textContent = "↻";
+
+    } else {
+
+      nextLabel.textContent = "Siguiente";
+      nextArrow.textContent = "→";
+
+    }
+
+    const progress =
+      ((sceneIndex + 1) / scenes.length) * 100;
+
+    progressFill.style.width =
+      `${progress}%`;
+
+    dots.forEach((dot,index) => {
+
+      const active = index === sceneIndex;
+
+      dot.classList.toggle(
+        "is-current",
+        active
+      );
+
+      if (active) {
+
+        dot.setAttribute(
+          "aria-current",
+          "step"
+        );
+
       } else {
+
         dot.removeAttribute("aria-current");
+
       }
+
     });
+
   }
 
-  function writeDialogue(textElement, bubble, fullText, version) {
-    if (reducedMotion.matches) {
-      textElement.textContent = fullText;
-      bubble.classList.remove("is-typing");
+  // =====================================================
+  // PREPARAR BURBUJA SIN CAMBIOS DE TAMAÑO
+  // =====================================================
+
+  function reserveSpeechHeight(textElement,message) {
+
+    textElement.style.minHeight = "";
+
+    textElement.textContent = message;
+
+    const fullHeight =
+      textElement.getBoundingClientRect().height;
+
+    textElement.style.minHeight =
+      `${Math.max(65,Math.ceil(fullHeight))}px`;
+
+    textElement.textContent = "";
+
+  }
+
+  // =====================================================
+  // ESCRIBIR DIÁLOGO PROGRESIVAMENTE
+  // =====================================================
+
+  function typeDialogue(
+    textElement,
+    bubble,
+    message,
+    currentAnimation
+  ) {
+
+    if (prefersReducedMotion.matches) {
+
+      textElement.textContent = message;
+
+      bubble.classList.add("is-complete");
+
       return;
+
     }
 
-    const characters = Array.from(fullText);
+    const letters =
+      Array.from(message);
+
     let position = 0;
 
-    typingInterval = window.setInterval(() => {
-      if (version !== animationVersion) {
+    typeTimer = window.setInterval(() => {
+
+      if (currentAnimation !== animationId) {
         return;
       }
 
-      position = Math.min(position + 1, characters.length);
+      position++;
 
-      textElement.textContent = characters.slice(0, position).join("");
+      textElement.textContent =
+        letters.slice(0,position).join("");
 
-      if (position >= characters.length) {
-        window.clearInterval(typingInterval);
-        typingInterval = null;
-        bubble.classList.remove("is-typing");
+      if (position >= letters.length) {
+
+        window.clearInterval(typeTimer);
+
+        typeTimer = null;
+
+        bubble.classList.add("is-complete");
+
       }
-    }, 33);
+
+    },34);
+
   }
 
+  // =====================================================
+  // REPRODUCIR ESCENA
+  // =====================================================
+
   function playScene() {
+
     cancelAnimations();
 
-    const version = animationVersion;
-    const scene = scenes[current];
+    const currentAnimation = animationId;
 
-    const character = scene.querySelector(".guide-character");
-    const bubble = scene.querySelector(".speech");
-    const speechText = scene.querySelector(".speech-text");
+    const scene =
+      scenes[sceneIndex];
 
-    const elements = [...scene.querySelectorAll("[data-reveal]")];
-    const dialogue = scene.dataset.dialogue || "";
+    const character =
+      scene.querySelector(".character-entrance");
+
+    const speech =
+      scene.querySelector(".speech");
+
+    const guide =
+      scene.querySelector(".guide");
+
+    const speechText =
+      scene.querySelector(".speech-text");
+
+    const reveals = [
+      ...scene.querySelectorAll("[data-reveal]")
+    ];
+
+    const message =
+      scene.dataset.dialogue || "";
+
+    const celebration =
+      scene.querySelector(".celebration");
 
     loadMascot(scene);
 
     scene.classList.add("is-playing");
 
     character.classList.remove("is-entered");
-    bubble.classList.remove("is-visible", "is-typing");
-    speechText.textContent = "";
 
-    elements.forEach((element) => {
-      element.classList.remove("shown");
+    speech.classList.remove(
+      "is-visible",
+      "is-complete"
+    );
+
+    guide.classList.remove("is-speaking");
+
+    reveals.forEach((item) => {
+      item.classList.remove("shown");
     });
 
+    celebration?.classList.remove(
+      "is-celebrating"
+    );
+
+    reserveSpeechHeight(
+      speechText,
+      message
+    );
+
+    alignDialogue(scene);
+
+    // Permite volver a reproducir las animaciones CSS.
     void scene.offsetWidth;
 
-    if (reducedMotion.matches) {
-      character.classList.add("is-entered");
-      bubble.classList.add("is-visible");
-      speechText.textContent = dialogue;
+    // Modo de movimiento reducido.
 
-      elements.forEach((element) => {
-        element.classList.add("shown");
+    if (prefersReducedMotion.matches) {
+
+      character.classList.add("is-entered");
+
+      speech.classList.add(
+        "is-visible",
+        "is-complete"
+      );
+
+      guide.classList.add("is-speaking");
+
+      speechText.textContent = message;
+
+      reveals.forEach((item) => {
+        item.classList.add("shown");
       });
 
       return;
+
     }
 
-    schedule(() => {
-      if (version === animationVersion) {
-        character.classList.add("is-entered");
-      }
-    }, 130);
+    // Fase 1: entrada de Alex.
 
     schedule(() => {
-      if (version !== animationVersion) {
+
+      if (currentAnimation === animationId) {
+        character.classList.add("is-entered");
+      }
+
+      schedule(() => {
+
+        if (currentAnimation === animationId) {
+          alignDialogue(scene);
+        }
+
+      },1000);
+
+    },120);
+
+    // Fase 2: aparece el diálogo.
+
+    schedule(() => {
+
+      if (currentAnimation !== animationId) {
         return;
       }
 
-      bubble.classList.add("is-visible", "is-typing");
-      writeDialogue(speechText, bubble, dialogue, version);
-    }, 790);
+      speech.classList.add("is-visible");
 
-    elements.forEach((element, index) => {
+      guide.classList.add("is-speaking");
+
+      typeDialogue(
+        speechText,
+        speech,
+        message,
+        currentAnimation
+      );
+
+    },750);
+
+    // Ajustar la punta de la burbuja.
+
+    schedule(() => {
+
+      if (currentAnimation === animationId) {
+        alignDialogue(scene);
+      }
+
+    },1540);
+
+    // Fase 3: elementos visuales progresivos.
+
+    reveals.forEach((item,index) => {
+
+      const delay =
+        1070 + index * 550;
+
       schedule(() => {
-        if (version === animationVersion) {
-          element.classList.add("shown");
+
+        if (currentAnimation === animationId) {
+          item.classList.add("shown");
         }
-      }, 1190 + index * 790);
+
+      },delay);
+
     });
+
+    // Fase 4: pequeña celebración del cierre.
+
+    if (celebration) {
+
+      schedule(() => {
+
+        if (currentAnimation === animationId) {
+          celebration.classList.add(
+            "is-celebrating"
+          );
+        }
+
+      },1350 + reveals.length * 550);
+
+    }
+
   }
 
+  // =====================================================
+  // CAMBIAR ENTRE ESCENAS
+  // =====================================================
+
   function showScene(index) {
-    if (!Number.isInteger(index) || index < 0 || index >= scenes.length) {
+
+    if (
+      !Number.isInteger(index) ||
+      index < 0 ||
+      index >= scenes.length
+    ) {
       return;
     }
 
     cancelAnimations();
 
-    scenes[current].classList.remove("is-active", "is-playing");
-    scenes[current].setAttribute("aria-hidden", "true");
+    const previousScene =
+      scenes[sceneIndex];
 
-    current = index;
+    previousScene.classList.remove(
+      "is-active",
+      "is-playing"
+    );
 
-    const scene = scenes[current];
+    previousScene.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    sceneIndex = index;
+
+    const scene =
+      scenes[sceneIndex];
 
     scene.classList.add("is-active");
-    scene.setAttribute("aria-hidden", "false");
+
+    scene.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
     scene.scrollTop = 0;
 
-    updateControls();
+    updateNavigation();
+
     playScene();
+
   }
 
-  previous.addEventListener("click", () => {
-    showScene(current - 1);
+  // =====================================================
+  // CONTROLES INFERIORES
+  // =====================================================
+
+  previousButton.addEventListener("click", () => {
+    showScene(sceneIndex - 1);
   });
 
-  next.addEventListener("click", () => {
-    showScene(current === scenes.length - 1 ? 0 : current + 1);
+  nextButton.addEventListener("click", () => {
+
+    if (sceneIndex === scenes.length - 1) {
+      showScene(0);
+    } else {
+      showScene(sceneIndex + 1);
+    }
+
   });
 
-  replay.addEventListener("click", () => {
+  replayButton.addEventListener("click", () => {
     playScene();
   });
 
-  document.getElementById("goHome")?.addEventListener("click", (event) => {
-    event.preventDefault();
-    showScene(0);
-  });
+  document.getElementById("homeLink")
+    ?.addEventListener("click",(event) => {
 
-  document.addEventListener("keydown", (event) => {
+      event.preventDefault();
+
+      showScene(0);
+
+    });
+
+  // =====================================================
+  // TECLADO: FLECHAS IZQUIERDA Y DERECHA
+  // =====================================================
+
+  document.addEventListener("keydown",(event) => {
+
     if (
       event.altKey ||
       event.ctrlKey ||
       event.metaKey ||
-      event.target.closest("button, a, input, textarea, select")
+      event.target.closest(
+        "button,a,input,textarea,select"
+      )
     ) {
       return;
     }
 
     if (event.key === "ArrowRight") {
-      showScene(current === scenes.length - 1 ? 0 : current + 1);
+
+      if (sceneIndex === scenes.length - 1) {
+        showScene(0);
+      } else {
+        showScene(sceneIndex + 1);
+      }
+
     }
 
     if (event.key === "ArrowLeft") {
-      showScene(current - 1);
+      showScene(sceneIndex - 1);
     }
+
   });
+
+  // =====================================================
+  // DESLIZAMIENTO EN CELULARES
+  // =====================================================
 
   viewport.addEventListener(
     "touchstart",
     (event) => {
+
+      const touch =
+        event.changedTouches[0];
+
       touchStart = {
-        x: event.changedTouches[0].screenX,
-        y: event.changedTouches[0].screenY
+        x: touch.screenX,
+        y: touch.screenY
       };
+
     },
-    { passive: true }
+    {passive:true}
   );
 
   viewport.addEventListener(
     "touchend",
     (event) => {
-      if (!touchStart || event.target.closest("button, a")) {
+
+      if (!touchStart) {
         return;
       }
 
-      const dx = event.changedTouches[0].screenX - touchStart.x;
-      const dy = event.changedTouches[0].screenY - touchStart.y;
+      if (event.target.closest("button,a")) {
+        touchStart = null;
+        return;
+      }
+
+      const touch =
+        event.changedTouches[0];
+
+      const dx =
+        touch.screenX - touchStart.x;
+
+      const dy =
+        touch.screenY - touchStart.y;
 
       touchStart = null;
 
-      if (Math.abs(dx) < 90 || Math.abs(dy) > 65) {
+      if (
+        Math.abs(dx) < 85 ||
+        Math.abs(dy) > 65
+      ) {
         return;
       }
 
       if (dx < 0) {
-        showScene(current === scenes.length - 1 ? 0 : current + 1);
+
+        if (sceneIndex === scenes.length - 1) {
+          showScene(0);
+        } else {
+          showScene(sceneIndex + 1);
+        }
+
       } else {
-        showScene(current - 1);
+        showScene(sceneIndex - 1);
       }
+
     },
-    { passive: true }
+    {passive:true}
   );
 
-  scenes.forEach((scene, index) => {
-    scene.setAttribute("aria-hidden", String(index !== 0));
+  // =====================================================
+  // INICIAR PRESENTACIÓN
+  // =====================================================
+
+  scenes.forEach((scene,index) => {
+
+    scene.setAttribute(
+      "aria-hidden",
+      String(index !== 0)
+    );
+
   });
 
   document.documentElement.classList.add("js");
 
-  updateControls();
+  updateNavigation();
+
   playScene();
+
 });
