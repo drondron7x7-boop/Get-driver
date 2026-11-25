@@ -2,41 +2,17 @@
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
-
-  const scenes = [
-    ...document.querySelectorAll(".scene")
-  ];
-
-  const template =
-    document.getElementById("mascotTemplate");
-
-  const previousButton =
-    document.getElementById("prevButton");
-
-  const nextButton =
-    document.getElementById("nextButton");
-
-  const nextLabel =
-    document.getElementById("nextLabel");
-
-  const nextArrow =
-    document.getElementById("nextArrow");
-
-  const replayButton =
-    document.getElementById("replayButton");
-
-  const dotsContainer =
-    document.getElementById("sceneDots");
-
-  const progressFill =
-    document.getElementById("progressFill");
-
-  const viewport =
-    document.getElementById("viewport");
-
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  );
+  const scenes = [...document.querySelectorAll(".scene")];
+  const template = document.getElementById("mascotTemplate");
+  const previousButton = document.getElementById("prevButton");
+  const nextButton = document.getElementById("nextButton");
+  const nextLabel = document.getElementById("nextLabel");
+  const nextArrow = document.getElementById("nextArrow");
+  const replayButton = document.getElementById("replayButton");
+  const dotsContainer = document.getElementById("sceneDots");
+  const progressFill = document.getElementById("progressFill");
+  const viewport = document.getElementById("viewport");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   if (
     !scenes.length ||
@@ -50,586 +26,363 @@ document.addEventListener("DOMContentLoaded", () => {
     !progressFill ||
     !viewport
   ) {
-    console.error(
-      "Get Driver: faltan elementos del HTML para iniciar."
-    );
+    console.error("Faltan elementos necesarios para iniciar Get Driver.");
     return;
   }
 
+  const driverAppUrl =
+    "https://play.google.com/store/apps/details?id=com.getdriver.conductor&pcampaignid=web_share";
+
+  const driverAppLink = document.getElementById("driverAppLink");
+
+  if (driverAppLink && /^https?:\/\//i.test(driverAppUrl)) {
+    driverAppLink.href = driverAppUrl;
+    driverAppLink.target = "_blank";
+    driverAppLink.rel = "noopener noreferrer";
+    driverAppLink.classList.remove("is-pending");
+    driverAppLink.removeAttribute("aria-disabled");
+    driverAppLink.removeAttribute("tabindex");
+  }
+
+  const gifFiles = [
+    "assets/mascota/alex-saluda-derecha.gif",
+    "assets/mascota/alex-explica-izquierda.gif",
+    "assets/mascota/alex-habla-derecha.gif",
+    "assets/mascota/alex-habla-izquierda.gif",
+    "assets/mascota/alex-aprueba-derecha.gif",
+    "assets/mascota/alex-explica-izquierda.gif",
+    "assets/mascota/alex-habla-derecha.gif",
+    "assets/mascota/alex-habla-izquierda.gif",
+    "assets/mascota/alex-saluda-derecha.gif"
+  ];
+
+  scenes.forEach((scene, index) => {
+    scene.dataset.gif = gifFiles[index];
+  });
+
   let sceneIndex = 0;
-  let animationId = 0;
-  let pendingTimers = [];
-  let typeTimer = null;
+  let version = 0;
+  let timers = [];
+  let typingTimer = null;
   let touchStart = null;
 
-  scenes.forEach((scene) => {
+  scenes.forEach(scene => {
+    const guide = template.content.firstElementChild.cloneNode(true);
+    const image = guide.querySelector(".mascot-image");
+    const pose = guide.querySelector(".mascot-pose");
 
-    const mascot =
-      template.content.firstElementChild.cloneNode(true);
-
-    const image =
-      mascot.querySelector(".mascot-image");
-
-    const pose =
-      mascot.querySelector(".mascot-pose");
-
-    const title =
-      scene.querySelector("h1,h2")?.textContent.trim() ||
-      "Get Driver";
-
-    image.alt =
-      `Mascota de Get Driver presentando: ${title}`;
+    image.alt = `Alex de Get Driver: ${
+      scene.querySelector("h1,h2")?.textContent.trim() || "guía"
+    }`;
 
     image.addEventListener("load", () => {
-
-      pose.classList.toggle(
-        "has-image",
-        image.naturalWidth > 0
-      );
+      pose.classList.toggle("has-image", image.naturalWidth > 0);
 
       if (scene.classList.contains("is-active")) {
         alignDialogue(scene);
       }
-
     });
 
     image.addEventListener("error", () => {
       pose.classList.remove("has-image");
+
+      const notice = guide.querySelector(".mascot-placeholder small");
+
+      if (notice) {
+        notice.textContent =
+          `NO SE ENCONTRÓ: ${scene.dataset.gif.split("/").pop()}`;
+      }
+
+      console.error("No se pudo cargar el GIF:", scene.dataset.gif);
     });
 
-    scene.querySelector(".scene-shell").prepend(mascot);
-
+    scene.querySelector(".scene-shell").prepend(guide);
   });
 
   function loadMascot(scene) {
+    const image = scene.querySelector(".mascot-image");
 
-    const image =
-      scene.querySelector(".mascot-image");
-
-    if (!image || image.dataset.requested) {
+    if (!image || image.dataset.requested === "true") {
       return;
     }
 
     image.dataset.requested = "true";
-    image.src = scene.dataset.gif || "";
+
+    image.src = `${scene.dataset.gif}?v=alex-gifs-corregidos-6`;
 
     if (image.complete && image.naturalWidth > 0) {
-
-      image.closest(".mascot-pose")
-        .classList.add("has-image");
-
+      image.closest(".mascot-pose").classList.add("has-image");
     }
-
   }
 
   function alignDialogue(scene) {
-
     if (!scene.classList.contains("is-active")) {
       return;
     }
 
-    const guide =
-      scene.querySelector(".guide");
+    const guide = scene.querySelector(".guide");
+    const bubble = guide?.querySelector(".speech");
+    const image = guide?.querySelector(".mascot-image");
+    const placeholder = guide?.querySelector(".placeholder-head");
 
-    const bubble =
-      guide?.querySelector(".speech");
-
-    const image =
-      guide?.querySelector(".mascot-image");
-
-    const placeholder =
-      guide?.querySelector(".placeholder-head");
-
-    const pointer =
-      guide?.querySelector(".dialogue-pointer");
-
-    const tail =
-      guide?.querySelector(".pointer-tail");
-
-    if (
-      !guide ||
-      !bubble ||
-      !pointer ||
-      !tail
-    ) {
+    if (!guide || !bubble) {
       return;
     }
 
-    const guideBox =
-      guide.getBoundingClientRect();
+    const area = guide.getBoundingClientRect();
+    let mouthY = area.height * .4;
 
     const imageLoaded =
-      image && image.naturalWidth > 0;
-
-    let mouthX;
-    let mouthY;
+      image &&
+      image.naturalWidth > 0 &&
+      image.closest(".mascot-pose")?.classList.contains("has-image");
 
     if (imageLoaded) {
-
-      const frame =
-        image.getBoundingClientRect();
+      const box = image.getBoundingClientRect();
 
       const ratio = Math.min(
-        frame.width / image.naturalWidth,
-        frame.height / image.naturalHeight
+        box.width / image.naturalWidth,
+        box.height / image.naturalHeight
       );
 
-      const actualW =
-        image.naturalWidth * ratio;
-
-      const actualH =
-        image.naturalHeight * ratio;
-
-      const left =
-        frame.left + (frame.width - actualW) / 2;
-
-      const top =
-        frame.bottom - actualH;
-
-      const mx = Number(
-        scene.dataset.mouthX || 0.59
-      );
-
-      const my = Number(
-        scene.dataset.mouthY || 0.265
-      );
-
-      mouthX =
-        left + actualW * mx - guideBox.left;
+      const renderedHeight = image.naturalHeight * ratio;
+      const renderedTop = box.bottom - renderedHeight;
+      const mouthFraction = Number(scene.dataset.mouthY ?? 0.265);
 
       mouthY =
-        top + actualH * my - guideBox.top;
+        renderedTop +
+        renderedHeight * mouthFraction -
+        area.top;
 
     } else if (placeholder) {
-
-      const box =
-        placeholder.getBoundingClientRect();
-
-      mouthX =
-        box.left + box.width / 2 - guideBox.left;
+      const box = placeholder.getBoundingClientRect();
 
       mouthY =
-        box.top + box.height * .7 - guideBox.top;
-
-    } else {
-      return;
+        box.top +
+        box.height * .7 -
+        area.top;
     }
 
-    const bubbleHeight =
-      bubble.offsetHeight;
-
-    const upperLimit = Math.max(
-      6,
-      guide.clientHeight - bubbleHeight - 8
-    );
-
-    const preferredTop =
-      mouthY - bubbleHeight * .53;
+    const bubbleHeight = bubble.offsetHeight;
 
     const bubbleTop = Math.max(
-      6,
-      Math.min(upperLimit, preferredTop)
+      8,
+      Math.min(
+        Math.max(8, area.height - bubbleHeight - 8),
+        mouthY - bubbleHeight * .48
+      )
     );
 
     bubble.style.top = `${bubbleTop}px`;
 
-    const bubbleBox =
-      bubble.getBoundingClientRect();
-
-    const rightSide =
-      scene.dataset.side === "right";
-
-    const fromX =
-      (
-        rightSide
-          ? bubbleBox.right
-          : bubbleBox.left
-      ) - guideBox.left;
-
-    const fromY =
-      bubbleBox.top -
-      guideBox.top +
-      bubbleBox.height * .52;
-
-    const dx = mouthX - fromX;
-    const dy = mouthY - fromY;
-
-    const distance = Math.max(
-      1,
-      Math.hypot(dx,dy)
+    const triangleTop = Math.max(
+      17,
+      Math.min(
+        bubbleHeight - 29,
+        mouthY - bubbleTop - 10
+      )
     );
 
-    const pointerLength = Math.min(
-      29,
-      distance * .45
-    );
-
-    const toX =
-      fromX + (dx / distance) * pointerLength;
-
-    const toY =
-      fromY + (dy / distance) * pointerLength;
-
-    const controlX =
-      (fromX + toX) / 2;
-
-    const controlY =
-      (fromY + toY) / 2;
-
-    const width =
-      Math.max(1,guideBox.width);
-
-    const height =
-      Math.max(1,guideBox.height);
-
-    pointer.setAttribute(
-      "viewBox",
-      `0 0 ${width} ${height}`
-    );
-
-    const path = [
-      `M ${fromX} ${fromY - 9}`,
-      `Q ${controlX} ${controlY - 6} ${toX} ${toY}`,
-      `Q ${controlX} ${controlY + 6} ${fromX} ${fromY + 9}`,
-      "Z"
-    ].join(" ");
-
-    tail.setAttribute("d", path);
-
+    bubble.style.setProperty("--tail-y", `${triangleTop}px`);
   }
 
   window.addEventListener("resize", () => {
     alignDialogue(scenes[sceneIndex]);
   });
 
-  const dots = scenes.map((scene,index) => {
-
-    const dot =
-      document.createElement("button");
+  const dots = scenes.map((scene, index) => {
+    const dot = document.createElement("button");
 
     dot.type = "button";
     dot.className = "dot";
 
-    const title =
-      scene.querySelector("h1,h2").textContent.trim();
-
     dot.setAttribute(
       "aria-label",
-      `Ir a ${title}`
+      `Ir a ${
+        scene.querySelector("h1,h2")?.textContent.trim() ||
+        `escena ${index + 1}`
+      }`
     );
 
     dot.addEventListener("click", () => {
       showScene(index);
     });
 
-    dotsContainer.append(dot);
+    dotsContainer.appendChild(dot);
 
     return dot;
-
   });
 
-  function schedule(callback,delay) {
-
-    const timer =
-      window.setTimeout(callback,delay);
-
-    pendingTimers.push(timer);
-
+  function schedule(callback, ms) {
+    timers.push(window.setTimeout(callback, ms));
   }
 
-  function cancelAnimations() {
+  function clearAnimations() {
+    version++;
 
-    animationId++;
-
-    pendingTimers.forEach((timer) => {
-      window.clearTimeout(timer);
+    timers.forEach(timer => {
+      clearTimeout(timer);
     });
 
-    pendingTimers = [];
+    timers = [];
 
-    if (typeTimer !== null) {
-
-      window.clearInterval(typeTimer);
-      typeTimer = null;
-
+    if (typingTimer !== null) {
+      clearInterval(typingTimer);
+      typingTimer = null;
     }
-
   }
 
   function updateNavigation() {
-
-    previousButton.disabled =
-      sceneIndex === 0;
+    previousButton.disabled = sceneIndex === 0;
 
     if (sceneIndex === 0) {
-
       nextLabel.textContent = "Comenzar";
       nextArrow.textContent = "→";
 
     } else if (sceneIndex === scenes.length - 1) {
-
       nextLabel.textContent = "Reiniciar";
       nextArrow.textContent = "↻";
 
     } else {
-
       nextLabel.textContent = "Siguiente";
       nextArrow.textContent = "→";
-
     }
-
-    const progress =
-      ((sceneIndex + 1) / scenes.length) * 100;
 
     progressFill.style.width =
-      `${progress}%`;
+      `${((sceneIndex + 1) / scenes.length) * 100}%`;
 
-    dots.forEach((dot,index) => {
+    dots.forEach((dot, index) => {
+      dot.classList.toggle("is-current", index === sceneIndex);
 
-      const active = index === sceneIndex;
-
-      dot.classList.toggle(
-        "is-current",
-        active
-      );
-
-      if (active) {
-
-        dot.setAttribute(
-          "aria-current",
-          "step"
-        );
-
+      if (index === sceneIndex) {
+        dot.setAttribute("aria-current", "step");
       } else {
-
         dot.removeAttribute("aria-current");
-
       }
-
     });
-
   }
 
-  function reserveSpeechHeight(textElement,message) {
+  function reserveSpeechHeight(element, message) {
+    element.style.minHeight = "";
+    element.textContent = message;
 
-    textElement.style.minHeight = "";
+    const measured = element.getBoundingClientRect().height;
 
-    textElement.textContent = message;
+    element.style.minHeight =
+      `${Math.max(65, Math.ceil(measured))}px`;
 
-    const fullHeight =
-      textElement.getBoundingClientRect().height;
-
-    textElement.style.minHeight =
-      `${Math.max(65,Math.ceil(fullHeight))}px`;
-
-    textElement.textContent = "";
-
+    element.textContent = "";
   }
 
-  function typeDialogue(
-    textElement,
-    bubble,
-    message,
-    currentAnimation
-  ) {
-
-    if (prefersReducedMotion.matches) {
-
-      textElement.textContent = message;
+  function typeDialogue(element, bubble, message, animationVersion) {
+    if (reducedMotion.matches) {
+      element.textContent = message;
       bubble.classList.add("is-complete");
-
       return;
-
     }
 
-    const letters =
-      Array.from(message);
+    const letters = Array.from(message);
+    let count = 0;
 
-    let position = 0;
-
-    typeTimer = window.setInterval(() => {
-
-      if (currentAnimation !== animationId) {
+    typingTimer = window.setInterval(() => {
+      if (animationVersion !== version) {
         return;
       }
 
-      position++;
+      count++;
+      element.textContent = letters.slice(0, count).join("");
 
-      textElement.textContent =
-        letters.slice(0,position).join("");
-
-      if (position >= letters.length) {
-
-        window.clearInterval(typeTimer);
-
-        typeTimer = null;
-
+      if (count >= letters.length) {
+        clearInterval(typingTimer);
+        typingTimer = null;
         bubble.classList.add("is-complete");
-
       }
-
-    },34);
-
+    }, 34);
   }
 
   function playScene() {
+    clearAnimations();
 
-    cancelAnimations();
-
-    const currentAnimation = animationId;
-
-    const scene =
-      scenes[sceneIndex];
-
-    const character =
-      scene.querySelector(".character-entrance");
-
-    const speech =
-      scene.querySelector(".speech");
-
-    const guide =
-      scene.querySelector(".guide");
-
-    const speechText =
-      scene.querySelector(".speech-text");
-
-    const reveals = [
-      ...scene.querySelectorAll("[data-reveal]")
-    ];
-
-    const message =
-      scene.dataset.dialogue || "";
-
-    const celebration =
-      scene.querySelector(".celebration");
+    const currentVersion = version;
+    const scene = scenes[sceneIndex];
+    const character = scene.querySelector(".character-entrance");
+    const bubble = scene.querySelector(".speech");
+    const speechText = scene.querySelector(".speech-text");
+    const reveals = [...scene.querySelectorAll("[data-reveal]")];
+    const celebration = scene.querySelector(".celebration");
+    const message = scene.dataset.dialogue || "";
 
     loadMascot(scene);
 
     scene.classList.add("is-playing");
-
     character.classList.remove("is-entered");
+    bubble.classList.remove("is-visible", "is-complete");
 
-    speech.classList.remove(
-      "is-visible",
-      "is-complete"
-    );
-
-    guide.classList.remove("is-speaking");
-
-    reveals.forEach((item) => {
-      item.classList.remove("shown");
+    reveals.forEach(element => {
+      element.classList.remove("shown");
     });
 
-    celebration?.classList.remove(
-      "is-celebrating"
-    );
+    celebration?.classList.remove("is-celebrating");
 
-    reserveSpeechHeight(
-      speechText,
-      message
-    );
-
+    reserveSpeechHeight(speechText, message);
     alignDialogue(scene);
 
     void scene.offsetWidth;
 
-    if (prefersReducedMotion.matches) {
-
+    if (reducedMotion.matches) {
       character.classList.add("is-entered");
-
-      speech.classList.add(
-        "is-visible",
-        "is-complete"
-      );
-
-      guide.classList.add("is-speaking");
-
+      bubble.classList.add("is-visible", "is-complete");
       speechText.textContent = message;
 
-      reveals.forEach((item) => {
-        item.classList.add("shown");
+      reveals.forEach(element => {
+        element.classList.add("shown");
       });
 
+      alignDialogue(scene);
       return;
-
     }
 
     schedule(() => {
-
-      if (currentAnimation !== animationId) {
-        return;
-      }
-
       character.classList.add("is-entered");
-
-      schedule(() => {
-
-        if (currentAnimation === animationId) {
-          alignDialogue(scene);
-        }
-
-      },1000);
-
-    },120);
+    }, 120);
 
     schedule(() => {
-
-      if (currentAnimation !== animationId) {
+      if (currentVersion !== version) {
         return;
       }
 
-      speech.classList.add("is-visible");
-
-      guide.classList.add("is-speaking");
+      bubble.classList.add("is-visible");
 
       typeDialogue(
         speechText,
-        speech,
+        bubble,
         message,
-        currentAnimation
+        currentVersion
       );
-
-    },750);
+    }, 750);
 
     schedule(() => {
-
-      if (currentAnimation === animationId) {
+      if (currentVersion === version) {
         alignDialogue(scene);
       }
+    }, 1300);
 
-    },1540);
-
-    reveals.forEach((item,index) => {
-
-      const delay =
-        1070 + index * 550;
-
+    reveals.forEach((element, index) => {
       schedule(() => {
-
-        if (currentAnimation === animationId) {
-          item.classList.add("shown");
+        if (currentVersion === version) {
+          element.classList.add("shown");
         }
-
-      },delay);
-
+      }, 1070 + index * 550);
     });
 
     if (celebration) {
-
       schedule(() => {
-
-        if (currentAnimation === animationId) {
-          celebration.classList.add("is-celebrating");
-        }
-
-      },1350 + reveals.length * 550);
-
+        celebration.classList.add("is-celebrating");
+      }, 1350 + reveals.length * 550);
     }
-
   }
 
   function showScene(index) {
-
     if (
       !Number.isInteger(index) ||
       index < 0 ||
@@ -638,39 +391,23 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    cancelAnimations();
+    clearAnimations();
 
-    const previousScene =
-      scenes[sceneIndex];
+    const old = scenes[sceneIndex];
 
-    previousScene.classList.remove(
-      "is-active",
-      "is-playing"
-    );
-
-    previousScene.setAttribute(
-      "aria-hidden",
-      "true"
-    );
+    old.classList.remove("is-active", "is-playing");
+    old.setAttribute("aria-hidden", "true");
 
     sceneIndex = index;
 
-    const scene =
-      scenes[sceneIndex];
+    const scene = scenes[sceneIndex];
 
     scene.classList.add("is-active");
-
-    scene.setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
+    scene.setAttribute("aria-hidden", "false");
     scene.scrollTop = 0;
 
     updateNavigation();
-
     playScene();
-
   }
 
   previousButton.addEventListener("click", () => {
@@ -678,134 +415,88 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   nextButton.addEventListener("click", () => {
-
-    if (sceneIndex === scenes.length - 1) {
-      showScene(0);
-    } else {
-      showScene(sceneIndex + 1);
-    }
-
+    showScene(
+      sceneIndex === scenes.length - 1
+        ? 0
+        : sceneIndex + 1
+    );
   });
 
-  replayButton.addEventListener("click", () => {
-    playScene();
+  replayButton.addEventListener("click", playScene);
+
+  document.getElementById("homeLink")?.addEventListener("click", event => {
+    event.preventDefault();
+    showScene(0);
   });
 
-  document.getElementById("homeLink")
-    ?.addEventListener("click",(event) => {
-
-      event.preventDefault();
-
-      showScene(0);
-
-    });
-
-  document.addEventListener("keydown",(event) => {
-
+  document.addEventListener("keydown", event => {
     if (
       event.altKey ||
       event.ctrlKey ||
       event.metaKey ||
-      event.target.closest(
-        "button,a,input,textarea,select"
-      )
+      event.target.closest("button,a,input,textarea,select")
     ) {
       return;
     }
 
     if (event.key === "ArrowRight") {
-
-      if (sceneIndex === scenes.length - 1) {
-        showScene(0);
-      } else {
-        showScene(sceneIndex + 1);
-      }
-
+      showScene(
+        sceneIndex === scenes.length - 1
+          ? 0
+          : sceneIndex + 1
+      );
     }
 
     if (event.key === "ArrowLeft") {
       showScene(sceneIndex - 1);
     }
-
   });
 
-  viewport.addEventListener(
-    "touchstart",
-    (event) => {
+  viewport.addEventListener("touchstart", event => {
+    const touch = event.changedTouches[0];
 
-      const touch =
-        event.changedTouches[0];
+    touchStart = {
+      x: touch.screenX,
+      y: touch.screenY
+    };
+  }, { passive: true });
 
-      touchStart = {
-        x: touch.screenX,
-        y: touch.screenY
-      };
+  viewport.addEventListener("touchend", event => {
+    if (!touchStart) {
+      return;
+    }
 
-    },
-    {passive:true}
-  );
+    const touch = event.changedTouches[0];
+    const dx = touch.screenX - touchStart.x;
+    const dy = touch.screenY - touchStart.y;
 
-  viewport.addEventListener(
-    "touchend",
-    (event) => {
+    touchStart = null;
 
-      if (!touchStart) {
-        return;
-      }
+    if (
+      event.target.closest("button,a") ||
+      Math.abs(dx) < 85 ||
+      Math.abs(dy) > 65
+    ) {
+      return;
+    }
 
-      if (event.target.closest("button,a")) {
-        touchStart = null;
-        return;
-      }
+    if (dx < 0) {
+      showScene(
+        sceneIndex === scenes.length - 1
+          ? 0
+          : sceneIndex + 1
+      );
+    } else {
+      showScene(sceneIndex - 1);
+    }
+  }, { passive: true });
 
-      const touch =
-        event.changedTouches[0];
-
-      const dx =
-        touch.screenX - touchStart.x;
-
-      const dy =
-        touch.screenY - touchStart.y;
-
-      touchStart = null;
-
-      if (
-        Math.abs(dx) < 85 ||
-        Math.abs(dy) > 65
-      ) {
-        return;
-      }
-
-      if (dx < 0) {
-
-        if (sceneIndex === scenes.length - 1) {
-          showScene(0);
-        } else {
-          showScene(sceneIndex + 1);
-        }
-
-      } else {
-
-        showScene(sceneIndex - 1);
-
-      }
-
-    },
-    {passive:true}
-  );
-
-  scenes.forEach((scene,index) => {
-
-    scene.setAttribute(
-      "aria-hidden",
-      String(index !== 0)
-    );
-
+  scenes.forEach((scene, index) => {
+    scene.setAttribute("aria-hidden", String(index !== 0));
   });
 
   document.documentElement.classList.add("js");
 
   updateNavigation();
   playScene();
-
 });
