@@ -5,10 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0E1F3D">
-  <meta name="description" content="Prototipo académico de afiliación para conductores Get Driver">
+  <meta name="description" content="Guía de afiliación Get Driver Conductor">
   <title>Get Driver | Guía de afiliación</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="styles.css?v=alex-gifs-corregidos-6">
+  <script src="script.js?v=alex-gifs-corregidos-6" defer></script>
 </head>
 <body>
 
@@ -55,16 +55,11 @@
       <div class="speech">
         <p class="speech-text"></p>
       </div>
-
       <div class="character-zone">
         <div class="character-entrance">
           <div class="mascot-pose">
             <div class="mascot-halo"></div>
-            <img
-              class="mascot-image"
-              alt="Alex, mascota de Get Driver"
-              decoding="async"
-            >
+            <img class="mascot-image" alt="Alex, mascota de Get Driver" decoding="async">
             <div class="mascot-placeholder" aria-hidden="true">
               <span class="placeholder-head">● ●<b>⌣</b></span>
               <small>ALEX</small>
@@ -73,47 +68,22 @@
           </div>
         </div>
       </div>
-
-      <svg
-        class="dialogue-pointer"
-        aria-hidden="true"
-        preserveAspectRatio="none"
-      >
-        <path class="pointer-tail"></path>
-      </svg>
     </aside>
   </template>
 
   <div class="app" id="inicio">
 
     <header class="topbar">
-      <a
-        class="brand"
-        id="homeLink"
-        href="#inicio"
-        aria-label="Volver al comienzo"
-      >
+      <a class="brand" id="homeLink" href="#inicio" aria-label="Volver al comienzo">
         <picture class="brand-plate">
-          <source
-            media="(max-width:680px)"
-            srcset="assets/logo/get-driver-sin-lema-blanco.png"
-          >
-          <img
-            class="brand-image"
-            src="assets/logo/get-driver-con-lema-blanco.png"
-            alt="Get Driver, elige libre, viaja seguro"
-          >
+          <source media="(max-width:680px)" srcset="assets/logo/get-driver-sin-lema-blanco.png">
+          <img class="brand-image" src="assets/logo/get-driver-con-lema-blanco.png" alt="Get Driver, elige libre, viaja seguro">
         </picture>
       </a>
 
       <div class="header-tag">
-        <img
-          class="header-symbol"
-          src="assets/logo/get-driver-isotipo-blanco.png"
-          alt=""
-          aria-hidden="true"
-        >
-        GUÍA DE AFILIACIÓN · CONDUCTORES
+        <img class="header-symbol" src="assets/logo/get-driver-isotipo-blanco.png" alt="" aria-hidden="true">
+        GUÍA DE AFILIACIÓN - CONDUCTORES
       </div>
 
       <div class="progress-line">
@@ -127,7 +97,8 @@
         class="scene is-active"
         data-side="left"
         data-pose="medium"
-        data-gif="assets/mascota/alex-provisional.gif"
+        data-gif="assets/mascota/alex-saluda-derecha.gif"
+        data-mouth-y="0.24"
         data-dialogue="¡Hola! Bienvenido a Get Driver. Te mostraré lo que necesitas y cómo enviar tu solicitud de afiliación. ¡Acompáñame!"
         aria-labelledby="t1"
       >
@@ -144,112 +115,35 @@
             </p>
 
             <div class="route-board" data-reveal data-motion="expand">
-              <svg
-                viewBox="0 0 620 250"
-                role="img"
-                aria-label="Ruta punteada desde inicio hasta destino"
-              >
+              <svg viewBox="0 0 620 250" role="img" aria-label="Ruta punteada desde inicio hasta destino">
                 <defs>
-                  <pattern
-                    id="mapGrid"
-                    width="46"
-                    height="46"
-                    patternUnits="userSpaceOnUse"
-                  >
-                    <path
-                      d="M46 0H0V46"
-                      fill="none"
-                      stroke="#B3D4E7"
-                      stroke-opacity=".16"
-                    />
+                  <pattern id="mapGrid" width="46" height="46" patternUnits="userSpaceOnUse">
+                    <path d="M46 0H0V46" fill="none" stroke="#B3D4E7" stroke-opacity=".16"/>
                   </pattern>
-                  <path
-                    id="journeyLine"
-                    d="M72 178C145 185 125 64 215 88S325 205 408 154 493 70 550 78"
-                  />
-                  <mask
-                    id="routeRevealMask"
-                    maskUnits="userSpaceOnUse"
-                    x="0"
-                    y="0"
-                    width="620"
-                    height="250"
-                  >
-                    <use
-                      href="#journeyLine"
-                      class="route-mask-stroke"
-                      fill="none"
-                      stroke="white"
-                      stroke-width="18"
-                      stroke-linecap="round"
-                    />
+                  <path id="journeyLine" d="M72 178C145 185 125 64 215 88S325 205 408 154 493 70 550 78"/>
+                  <mask id="routeRevealMask" maskUnits="userSpaceOnUse" x="0" y="0" width="620" height="250">
+                    <use href="#journeyLine" class="route-mask-stroke" fill="none" stroke="white" stroke-width="18" stroke-linecap="round"/>
                   </mask>
                 </defs>
-
                 <rect width="620" height="250" fill="url(#mapGrid)"/>
-
                 <g fill="#8BB4CF" opacity=".15">
                   <rect x="35" y="38" width="78" height="64" rx="10"/>
                   <rect x="157" y="181" width="65" height="55" rx="10"/>
                   <rect x="292" y="20" width="76" height="60" rx="10"/>
                   <rect x="443" y="180" width="89" height="59" rx="10"/>
                 </g>
-
-                <use
-                  href="#journeyLine"
-                  fill="none"
-                  stroke="#D5E3F2"
-                  stroke-opacity=".18"
-                  stroke-width="20"
-                  stroke-linecap="round"
-                />
-                <use
-                  href="#journeyLine"
-                  class="route-dots"
-                  mask="url(#routeRevealMask)"
-                  fill="none"
-                  stroke="#FFDE00"
-                  stroke-width="7"
-                  stroke-dasharray="1 18"
-                  stroke-linecap="round"
-                />
-
-                <circle
-                  cx="72"
-                  cy="178"
-                  r="12"
-                  fill="#FFDE00"
-                  stroke="#fff"
-                  stroke-width="4"
-                />
-
+                <use href="#journeyLine" fill="none" stroke="#D5E3F2" stroke-opacity=".18" stroke-width="20" stroke-linecap="round"/>
+                <use href="#journeyLine" class="route-dots" mask="url(#routeRevealMask)" fill="none" stroke="#FFDE00" stroke-width="7" stroke-dasharray="1 18" stroke-linecap="round"/>
+                <circle cx="72" cy="178" r="12" fill="#FFDE00" stroke="#fff" stroke-width="4"/>
                 <g transform="translate(550 78)">
-                  <path
-                    d="M0-24c-15 0-25 11-25 25 0 17 25 40 25 40S25 18 25 1C25-13 15-24 0-24Z"
-                    fill="#FFDE00"
-                  />
+                  <path d="M0-24c-15 0-25 11-25 25 0 17 25 40 25 40S25 18 25 1C25-13 15-24 0-24Z" fill="#FFDE00"/>
                   <circle cy="1" r="9" fill="#0E1F3D"/>
                 </g>
-
-                <text
-                  x="42"
-                  y="214"
-                  fill="white"
-                  font-size="17"
-                  font-weight="800"
-                >INICIO</text>
-                <text
-                  x="509"
-                  y="35"
-                  fill="white"
-                  font-size="17"
-                  font-weight="800"
-                >DESTINO</text>
+                <text x="42" y="214" fill="white" font-size="17" font-weight="800">INICIO</text>
+                <text x="509" y="35" fill="white" font-size="17" font-weight="800">DESTINO</text>
               </svg>
-
               <div class="map-caption">
-                <i></i>
-                TU RECORRIDO GET DRIVER
+                <i></i>TU RECORRIDO GET DRIVER
               </div>
             </div>
           </div>
@@ -260,15 +154,14 @@
         class="scene"
         data-side="right"
         data-pose="natural"
-        data-gif="assets/mascota/alex-provisional.gif"
-        data-dialogue="Primero, tu vehículo. Se consideran sedanes, hatchbacks y SUV, siempre que sean modelos de autos del 2010 en adelante."
+        data-gif="assets/mascota/alex-explica-izquierda.gif"
+        data-mouth-y="0.24"
+        data-dialogue="Primero, tu vehículo. Puedes utilizar sedán, hatchback o SUV, con modelos del año 2010 en adelante."
         aria-labelledby="t2"
       >
         <div class="scene-shell">
           <div class="scene-content">
-            <p class="eyebrow" data-reveal data-motion="slide-right">
-              ETAPA 1 · VEHÍCULO
-            </p>
+            <p class="eyebrow" data-reveal data-motion="slide-right">ETAPA 1 - VEHÍCULO</p>
             <h2 id="t2" data-reveal data-motion="zoom">
               Conoce los <em>vehículos.</em>
             </h2>
@@ -277,47 +170,21 @@
             </p>
 
             <div class="vehicle-grid">
-              <article
-                class="vehicle-card"
-                data-reveal
-                data-motion="slide-left"
-              >
+              <article class="vehicle-card" data-reveal data-motion="slide-left">
                 <div class="vehicle-art">
-                  <img
-                    src="assets/vehiculo/sedan.png"
-                    alt="Sedán azul estacionado de perfil en la ciudad"
-                    loading="lazy"
-                  >
+                  <img src="assets/vehiculo/sedan.png" alt="Sedán azul de perfil" loading="lazy">
                 </div>
                 <strong>Sedán</strong>
               </article>
-
-              <article
-                class="vehicle-card"
-                data-reveal
-                data-motion="zoom"
-              >
+              <article class="vehicle-card" data-reveal data-motion="zoom">
                 <div class="vehicle-art">
-                  <img
-                    src="assets/vehiculo/hatchback.png"
-                    alt="Hatchback rojo estacionado de perfil en la ciudad"
-                    loading="lazy"
-                  >
+                  <img src="assets/vehiculo/hatchback.png" alt="Hatchback rojo de perfil" loading="lazy">
                 </div>
                 <strong>Hatchback</strong>
               </article>
-
-              <article
-                class="vehicle-card"
-                data-reveal
-                data-motion="slide-right"
-              >
+              <article class="vehicle-card" data-reveal data-motion="slide-right">
                 <div class="vehicle-art">
-                  <img
-                    src="assets/vehiculo/suv.png"
-                    alt="SUV verde estacionado de perfil en la ciudad"
-                    loading="lazy"
-                  >
+                  <img src="assets/vehiculo/suv.png" alt="SUV verde de perfil" loading="lazy">
                 </div>
                 <strong>SUV</strong>
               </article>
@@ -330,8 +197,7 @@
                 <p>Del 2010 en adelante</p>
               </div>
               <div class="year-arrow" aria-hidden="true">
-                <span></span>
-                <i></i>
+                <span></span><i></i>
               </div>
             </div>
           </div>
@@ -342,15 +208,14 @@
         class="scene"
         data-side="left"
         data-pose="lean"
-        data-gif="assets/mascota/alex-provisional.gif"
-        data-dialogue="Para los documentos, prepara tu identidad y licencia de conducir vigentes. También el SOAT y la tarjeta de propiedad del auto."
+        data-gif="assets/mascota/alex-habla-derecha.gif"
+        data-mouth-y="0.24"
+        data-dialogue="Para comenzar, ten a la mano tu documento de identidad y tu licencia de conducir vigentes. También necesitarás el SOAT y la tarjeta de propiedad de tu vehículo."
         aria-labelledby="t3"
       >
         <div class="scene-shell">
           <div class="scene-content">
-            <p class="eyebrow" data-reveal data-motion="slide-left">
-              ETAPA 2 · DOCUMENTOS
-            </p>
+            <p class="eyebrow" data-reveal data-motion="slide-left">ETAPA 2 - DOCUMENTOS</p>
             <h2 id="t3" data-reveal data-motion="wipe">
               Prepara tus <em>documentos.</em>
             </h2>
@@ -360,39 +225,28 @@
 
             <div class="document-grid">
               <article class="document-card" data-reveal data-motion="flip">
-                <span class="icon-surface">
-                  <svg><use href="#i-id"/></svg>
-                </span>
+                <span class="icon-surface"><svg><use href="#i-id"/></svg></span>
                 <div>
                   <strong>DNI o identidad</strong>
                   <small>Documento vigente</small>
                 </div>
               </article>
-
               <article class="document-card" data-reveal data-motion="flip">
-                <span class="icon-surface">
-                  <svg><use href="#i-license"/></svg>
-                </span>
+                <span class="icon-surface"><svg><use href="#i-license"/></svg></span>
                 <div>
                   <strong>Licencia de conducir</strong>
                   <small>Licencia vigente</small>
                 </div>
               </article>
-
               <article class="document-card" data-reveal data-motion="flip">
-                <span class="icon-surface">
-                  <svg><use href="#i-shield"/></svg>
-                </span>
+                <span class="icon-surface"><svg><use href="#i-shield"/></svg></span>
                 <div>
                   <strong>SOAT</strong>
                   <small>Seguro vigente</small>
                 </div>
               </article>
-
               <article class="document-card" data-reveal data-motion="flip">
-                <span class="icon-surface">
-                  <svg><use href="#i-file"/></svg>
-                </span>
+                <span class="icon-surface"><svg><use href="#i-file"/></svg></span>
                 <div>
                   <strong>Tarjeta de propiedad</strong>
                   <small>Del vehículo</small>
@@ -407,56 +261,48 @@
         class="scene scene-antecedents"
         data-side="right"
         data-pose="near"
-        data-gif="assets/mascota/alex-provisional.gif"
-        data-dialogue="También necesitas antecedentes policiales y penales. El certificado policial virtual cuesta aproximadamente cinco soles con cuarenta. Si eres extranjero, consulta los requisitos según tu documento en la Comisaría de Yanahuara, avenida Ejército 341, Arequipa."
+        data-gif="assets/mascota/alex-habla-izquierda.gif"
+        data-mouth-y="0.24"
+        data-dialogue="Ahora, ten a mano tus antecedentes policiales y penales para la afiliación. Si eres extranjero, revisa la nota de abajo."
         aria-labelledby="t4"
       >
         <div class="scene-shell">
           <div class="scene-content">
-            <p class="eyebrow" data-reveal data-motion="slide-right">
-              ETAPA 2 · DOCUMENTOS
+            <p class="eyebrow" data-reveal data-motion="slide-right">ETAPA 2 - DOCUMENTOS</p>
+            <h2 id="t4" data-reveal data-motion="wipe">
+              Prepara tus <em>antecedentes.</em>
+            </h2>
+            <p class="lead antecedents-intro" data-reveal data-motion="fade">
+              Ten a mano tus antecedentes policiales y penales para tu afiliación.
             </p>
 
-            <h2 id="t4" data-reveal data-motion="wipe">
-              No olvides tus <em>antecedentes.</em>
-            </h2>
-
             <div class="background-docs">
-              <article
-                class="background-card"
-                data-reveal
-                data-motion="stamp"
-              >
-                <span class="stamp-icon">
-                  <svg><use href="#i-stamp"/></svg>
-                </span>
+              <article class="background-card" data-reveal data-motion="stamp">
+                <span class="stamp-icon"><svg><use href="#i-stamp"/></svg></span>
                 <strong>Antecedentes policiales</strong>
-                <span class="stamp-seal">Virtual: aprox. S/ 5.40</span>
               </article>
-
-              <article
-                class="background-card"
-                data-reveal
-                data-motion="stamp"
-              >
-                <span class="stamp-icon">
-                  <svg><use href="#i-file"/></svg>
-                </span>
+              <article class="background-card" data-reveal data-motion="stamp">
+                <span class="stamp-icon"><svg><use href="#i-file"/></svg></span>
                 <strong>Antecedentes penales</strong>
-                <span class="stamp-seal">Costo independiente</span>
               </article>
             </div>
 
-            <div class="foreign-note" data-reveal data-motion="slide-left">
-              <span class="note-symbol">i</span>
-              <p>
-                <strong>Conductores extranjeros:</strong>
-                pueden consultar los requisitos según su documento en la
-                <strong>Comisaría de Yanahuara</strong>,
-                Av. Ejército 341, Yanahuara, Arequipa.
-                Conviene confirmar la atención antes de acudir.
-              </p>
-            </div>
+            <p class="local-clarification" data-reveal data-motion="fade">
+              Para conductores peruanos, la consulta es gratuita en esta propuesta.
+            </p>
+
+            <aside class="foreign-note" data-reveal data-motion="slide-right">
+              <span class="note-symbol" aria-hidden="true">i</span>
+              <div class="foreign-body">
+                <strong>Dato adicional para extranjeros</strong>
+                <p>
+                  Si te solicitan antecedentes de tu país de origen,
+                  consulta los requisitos en la Comisaría de Yanahuara,
+                  Av. Ejército 341, Arequipa.
+                </p>
+                <small>Monto referencial del ejemplo: S/ 5.40.</small>
+              </div>
+            </aside>
           </div>
         </div>
       </section>
@@ -465,15 +311,14 @@
         class="scene"
         data-side="left"
         data-pose="natural"
-        data-gif="assets/mascota/alex-provisional.gif"
+        data-gif="assets/mascota/alex-aprueba-derecha.gif"
+        data-mouth-y="0.24"
         data-dialogue="Ahora las fotos del vehículo. Prepara una vista frontal, una trasera y ambos laterales. Son cuatro fotografías exteriores."
         aria-labelledby="t5"
       >
         <div class="scene-shell">
           <div class="scene-content">
-            <p class="eyebrow" data-reveal data-motion="slide-left">
-              ETAPA 3 · FOTOGRAFÍAS
-            </p>
+            <p class="eyebrow" data-reveal data-motion="slide-left">ETAPA 3 - FOTOGRAFÍAS</p>
             <h2 id="t5" data-reveal data-motion="zoom">
               Cuatro vistas <em>exteriores.</em>
             </h2>
@@ -484,44 +329,25 @@
             <div class="photo-grid">
               <article class="photo-card" data-reveal data-motion="photo">
                 <div class="photo-art">
-                  <img
-                    src="assets/vehiculo/frontal.png"
-                    alt="Toyota Corolla plateado de frente"
-                    loading="lazy"
-                  >
+                  <img src="assets/vehiculo/frontal.png" alt="Toyota Corolla de frente" loading="lazy">
                 </div>
                 <strong>Frontal</strong>
               </article>
-
               <article class="photo-card" data-reveal data-motion="photo">
                 <div class="photo-art">
-                  <img
-                    src="assets/vehiculo/trasera.png"
-                    alt="Toyota Corolla plateado por detrás"
-                    loading="lazy"
-                  >
+                  <img src="assets/vehiculo/trasera.png" alt="Toyota Corolla por detrás" loading="lazy">
                 </div>
                 <strong>Trasera</strong>
               </article>
-
               <article class="photo-card" data-reveal data-motion="photo">
                 <div class="photo-art">
-                  <img
-                    src="assets/vehiculo/lateral-izquierdo.png"
-                    alt="Toyota Corolla desde el lateral izquierdo"
-                    loading="lazy"
-                  >
+                  <img src="assets/vehiculo/lateral-izquierdo.png" alt="Toyota Corolla desde el lateral izquierdo" loading="lazy">
                 </div>
                 <strong>Lateral izquierdo</strong>
               </article>
-
               <article class="photo-card" data-reveal data-motion="photo">
                 <div class="photo-art">
-                  <img
-                    src="assets/vehiculo/lateral-derecho.png"
-                    alt="Toyota Corolla desde el lateral derecho"
-                    loading="lazy"
-                  >
+                  <img src="assets/vehiculo/lateral-derecho.png" alt="Toyota Corolla desde el lateral derecho" loading="lazy">
                 </div>
                 <strong>Lateral derecho</strong>
               </article>
@@ -534,15 +360,14 @@
         class="scene"
         data-side="right"
         data-pose="close"
-        data-gif="assets/mascota/alex-provisional.gif"
+        data-gif="assets/mascota/alex-explica-izquierda.gif"
+        data-mouth-y="0.24"
         data-dialogue="Completa el registro visual con fotos del interior delantero y trasero, más una selfie tuya sin lentes oscuros. En total: seis fotos del auto y una selfie."
         aria-labelledby="t6"
       >
         <div class="scene-shell">
           <div class="scene-content">
-            <p class="eyebrow" data-reveal data-motion="slide-right">
-              ETAPA 3 · FOTOGRAFÍAS
-            </p>
+            <p class="eyebrow" data-reveal data-motion="slide-right">ETAPA 3 - FOTOGRAFÍAS</p>
             <h2 id="t6" data-reveal data-motion="zoom">
               Interior <em>y selfie.</em>
             </h2>
@@ -551,46 +376,24 @@
             </p>
 
             <div class="interior-grid">
-              <article
-                class="interior-card"
-                data-reveal
-                data-motion="camera-zoom"
-              >
+              <article class="interior-card" data-reveal data-motion="camera-zoom">
                 <div class="interior-art">
-                  <img
-                    src="assets/vehiculo/interior-delantero.png"
-                    alt="Interior delantero del Toyota Corolla"
-                    loading="lazy"
-                  >
+                  <img src="assets/vehiculo/interior-delantero.png" alt="Interior delantero del Toyota Corolla" loading="lazy">
                 </div>
                 <strong>Interior delantero</strong>
               </article>
-
-              <article
-                class="interior-card"
-                data-reveal
-                data-motion="camera-zoom"
-              >
+              <article class="interior-card" data-reveal data-motion="camera-zoom">
                 <div class="interior-art">
-                  <img
-                    src="assets/vehiculo/interior-trasero.png"
-                    alt="Interior trasero del Toyota Corolla"
-                    loading="lazy"
-                  >
+                  <img src="assets/vehiculo/interior-trasero.png" alt="Interior trasero del Toyota Corolla" loading="lazy">
                 </div>
                 <strong>Interior trasero</strong>
               </article>
-
-              <article
-                class="interior-card"
-                data-reveal
-                data-motion="zoom"
-              >
+              <article class="interior-card" data-reveal data-motion="zoom">
                 <div class="interior-art selfie-art">
                   <img
                     class="selfie-photo"
                     src="assets/conductor/selfie-ejemplo.png"
-                    alt="Selfie de ejemplo con rostro y torso visibles"
+                    alt="Selfie de ejemplo"
                     loading="lazy"
                   >
                 </div>
@@ -600,9 +403,7 @@
             </div>
 
             <div class="count-banner" data-reveal data-motion="stamp">
-              <svg class="line-icon">
-                <use href="#i-camera"/>
-              </svg>
+              <svg class="line-icon"><use href="#i-camera"/></svg>
               <strong>6 fotos del auto + 1 selfie</strong>
             </div>
           </div>
@@ -613,58 +414,43 @@
         class="scene"
         data-side="left"
         data-pose="medium"
-        data-gif="assets/mascota/alex-provisional.gif"
+        data-gif="assets/mascota/alex-habla-derecha.gif"
+        data-mouth-y="0.24"
         data-dialogue="Con tus documentos listos, abre GET DRIVER Conductor. Puedes utilizar tu cuenta de pasajero. En pantalla verás un ejemplo de cómo crear una cuenta y completar tus datos de contacto."
         aria-labelledby="t7"
       >
         <div class="scene-shell">
           <div class="scene-content">
-            <p class="eyebrow" data-reveal data-motion="slide-left">
-              ETAPA 4 · APLICACIÓN
-            </p>
+            <p class="eyebrow" data-reveal data-motion="slide-left">ETAPA 4 - APLICACIÓN</p>
             <h2 id="t7" data-reveal data-motion="wipe">
               Inicia tu <em>registro.</em>
             </h2>
 
             <div class="app-layout">
-              <div
-                class="app-preview"
-                data-reveal
-                data-motion="camera-zoom"
-              >
+              <div class="app-preview" data-reveal data-motion="camera-zoom">
                 <div class="screen-frame">
-                  <img
-                    src="assets/app/crear-cuenta.jpg"
-                    alt="Captura real de Get Driver Conductor: crear cuenta"
-                    loading="lazy"
-                  >
+                  <div class="phone-screen">
+                    <img src="assets/app/crear-cuenta.jpg" alt="Pantalla para crear cuenta de Get Driver Conductor" loading="lazy">
+                  </div>
                 </div>
                 <div class="screen-caption">
-                  <img
-                    src="assets/logo/get-driver-isotipo.png"
-                    alt=""
-                    aria-hidden="true"
-                  >
+                  <img src="assets/logo/get-driver-isotipo.png" alt="" aria-hidden="true">
                   <span>Ejemplo: crear cuenta</span>
                 </div>
               </div>
 
               <div class="app-steps">
                 <div class="app-step" data-reveal data-motion="step-slide">
-                  <b>1</b>
-                  <p><strong>Descarga</strong> GET DRIVER Conductor.</p>
+                  <b>1</b><p><strong>Descarga</strong> GET DRIVER Conductor.</p>
                 </div>
                 <div class="app-step" data-reveal data-motion="step-slide">
-                  <b>2</b>
-                  <p><strong>Inicia sesión</strong> con tu cuenta de pasajero.</p>
+                  <b>2</b><p><strong>Inicia sesión</strong> con tu cuenta de pasajero.</p>
                 </div>
                 <div class="app-step" data-reveal data-motion="step-slide">
-                  <b>3</b>
-                  <p><strong>Completa</strong> tus datos personales y de contacto.</p>
+                  <b>3</b><p><strong>Completa</strong> tus datos personales y de contacto.</p>
                 </div>
                 <div class="app-step" data-reveal data-motion="step-slide">
-                  <b>4</b>
-                  <p><strong>Registra</strong> los datos del vehículo.</p>
+                  <b>4</b><p><strong>Registra</strong> los datos del vehículo.</p>
                 </div>
               </div>
             </div>
@@ -676,29 +462,22 @@
         class="scene"
         data-side="right"
         data-pose="natural"
-        data-gif="assets/mascota/alex-provisional.gif"
+        data-gif="assets/mascota/alex-habla-izquierda.gif"
+        data-mouth-y="0.24"
         data-dialogue="Luego adjunta documentos, fotos y selfie. Revisa, envía la solicitud y espera la verificación de Get Driver dentro de la aplicación."
         aria-labelledby="t8"
       >
         <div class="scene-shell">
           <div class="scene-content">
-            <p class="eyebrow" data-reveal data-motion="slide-right">
-              ETAPA 4 · APLICACIÓN
-            </p>
+            <p class="eyebrow" data-reveal data-motion="slide-right">ETAPA 4 - APLICACIÓN</p>
             <h2 id="t8" data-reveal data-motion="zoom">
               Envía tu <em>solicitud.</em>
             </h2>
 
             <div class="process-list">
-              <article
-                class="process-item"
-                data-reveal
-                data-motion="process-enter"
-              >
+              <article class="process-item" data-reveal data-motion="process-enter">
                 <div class="process-icon">
-                  <svg class="line-icon">
-                    <use href="#i-upload"/>
-                  </svg>
+                  <svg class="line-icon"><use href="#i-upload"/></svg>
                 </div>
                 <div>
                   <small>PASO 5</small>
@@ -706,16 +485,9 @@
                   <p>Documentos, fotografías y selfie.</p>
                 </div>
               </article>
-
-              <article
-                class="process-item"
-                data-reveal
-                data-motion="process-enter"
-              >
+              <article class="process-item" data-reveal data-motion="process-enter">
                 <div class="process-icon">
-                  <svg class="line-icon">
-                    <use href="#i-check"/>
-                  </svg>
+                  <svg class="line-icon"><use href="#i-check"/></svg>
                 </div>
                 <div>
                   <small>PASO 6</small>
@@ -723,16 +495,9 @@
                   <p>Comprueba que todo esté correcto.</p>
                 </div>
               </article>
-
-              <article
-                class="process-item"
-                data-reveal
-                data-motion="process-enter"
-              >
+              <article class="process-item" data-reveal data-motion="process-enter">
                 <div class="process-icon">
-                  <svg class="line-icon">
-                    <use href="#i-search"/>
-                  </svg>
+                  <svg class="line-icon"><use href="#i-search"/></svg>
                 </div>
                 <div>
                   <small>PASO 7</small>
@@ -746,10 +511,11 @@
       </section>
 
       <section
-        class="scene"
+        class="scene scene-finale"
         data-side="left"
         data-pose="near"
-        data-gif="assets/mascota/alex-provisional.gif"
+        data-gif="assets/mascota/alex-saluda-derecha.gif"
+        data-mouth-y="0.24"
         data-dialogue="¡Excelente! Ya conoces cómo afiliarte. Recuerda cuidar tu presentación y brindar siempre un trato respetuoso a tus pasajeros. ¡Te esperamos!"
         aria-labelledby="t9"
       >
@@ -782,14 +548,24 @@
               </article>
             </div>
 
-            <div class="goodbye-banner" data-reveal data-motion="stamp">
-              <img
-                class="goodbye-logo"
-                src="assets/logo/get-driver-con-lema.png"
-                alt="Get Driver: Elige libre, viaja seguro"
-                loading="lazy"
+            <div class="download-card" data-reveal data-motion="slide-right">
+              <div class="download-icon">
+                <img src="assets/logo/get-driver-isotipo-blanco.png" alt="" aria-hidden="true">
+              </div>
+              <div class="download-copy">
+                <strong>Get Driver Conductor</strong>
+                <span>Disponible en Google Play para Android.</span>
+              </div>
+              <a
+                class="app-link is-pending"
+                id="driverAppLink"
+                role="link"
+                aria-disabled="true"
+                tabindex="-1"
               >
-              <p>La solicitud se realiza en GET DRIVER Conductor.</p>
+                <span>Descargar app</span>
+                <span aria-hidden="true">↗</span>
+              </a>
             </div>
 
             <div class="celebration" aria-hidden="true">
@@ -802,40 +578,22 @@
     </main>
 
     <footer class="controls">
-      <button
-        class="nav-btn nav-back"
-        id="prevButton"
-        type="button"
-        disabled
-      >
+      <button class="nav-btn nav-back" id="prevButton" type="button" disabled>
         ← <span>Anterior</span>
       </button>
 
       <div class="controls-middle">
-        <div
-          class="dots"
-          id="sceneDots"
-          aria-label="Navegación por escenas"
-        ></div>
-        <button
-          class="replay-btn"
-          id="replayButton"
-          type="button"
-        >
+        <div class="dots" id="sceneDots" aria-label="Navegación por escenas"></div>
+        <button class="replay-btn" id="replayButton" type="button">
           ↻ Repetir escena
         </button>
       </div>
 
-      <button
-        class="nav-btn nav-next"
-        id="nextButton"
-        type="button"
-      >
+      <button class="nav-btn nav-next" id="nextButton" type="button">
         <span id="nextLabel">Comenzar</span>
         <span id="nextArrow" aria-hidden="true">→</span>
       </button>
     </footer>
-
   </div>
 </body>
 </html>
